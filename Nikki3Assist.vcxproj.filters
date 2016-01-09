@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="src\IFDataType">
+      <UniqueIdentifier>{bf5af52d-4b50-4fd9-ae22-1a28d7253838}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\IFMacros">
+      <UniqueIdentifier>{0d3dd065-f65c-4df0-8d94-31143ee3bea3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ProgramArguments.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GlobalEnum.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFDataType\IFException.h">
+      <Filter>src\IFDataType</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFDataType\IFThrowable.h">
+      <Filter>src\IFDataType</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFDataType\IFStackTraceInfo.h">
+      <Filter>src\IFDataType</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFDataType\Tstring.h">
+      <Filter>src\IFDataType</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFMacros\BasicOperateMacro.h">
+      <Filter>src\IFMacros</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFMacros\BasicProcessMacro.h">
+      <Filter>src\IFMacros</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFMacros\DevelopMacros.h">
+      <Filter>src\IFMacros</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFMacros\SleepMacro.h">
+      <Filter>src\IFMacros</Filter>
+    </ClInclude>
+    <ClInclude Include="src\IFMacros\BasicMacro.h">
+      <Filter>src\IFMacros</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GlobalDataType.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MainGoogleTest.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProgramArguments.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IFDataType\Tstring.cpp">
+      <Filter>src\IFDataType</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IFDataType\TestTstring.cpp">
+      <Filter>src\IFDataType</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
