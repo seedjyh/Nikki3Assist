@@ -1,0 +1,72 @@
+数据库设计：8张表
+<ItemTypes>
+primary key in typeid
+string typename
+注1：金币、钻石、星光币、联盟币、水晶鞋……等货币属于类型0，染料、制作原料（布片）等消耗品属于类型1，设计图属于类型2。“衣柜”里有分类的，从3开始。注意“饰品”不进一步分类。
+
+<Items>
+primary key int id
+string name
+foreign key int typeid
+int id_in_game
+
+<Inventory>
+foreign key ID
+int count
+
+<CreatingRules> // “合成”、“进化”、“元素重构”都在这里，因为都属于“会保留一个原材料”的类型。注意这里“金币”（类型0）是不会保留一个的。
+foreign key int product_uid
+foreign key int raw_material_uid
+int count
+
+<DyeingRules> // 这张表里公式的执行不会保留1个原材料。
+foreign key int product_uid
+foreign key int raw_material_uid
+int count
+
+<Store>
+foreign key int item_uid
+foreign key int money_uid
+int price
+
+<Tasks>
+primary key id
+string type-name // 注：3种，包括公主级、少女级、联盟任务。
+string chapter // 1~9
+string stage // 1~N, 支1~支M
+
+<TaskRewards>
+foreign key int task_uid
+foreign key int reward_item_uid
+
+======================================
+《查询物品信息》返回内容
+id，类型名、类型内部（游戏内部）的id、现有数量、获取方法。
+其中“获取方法”列出合成公式、购买价格（金额和货币名）、可以获取的任务列表（任务类型名、章节号、舞台号）
+
+======================================
+《查询物品获取方法》返回内容
+统计过程：
+    根据“物品合成公式”和“物品持有数”，计算出【还需要】获得的物品数量。
+    如果需要获得的物品能找到合成公式，那么进一步拆分成其合成原料。
+    如果需要获得的物品可以通过多种渠道获取，那么统计优先级是：任务>制作>订制>金币>联盟币>星光币>钻石。虽然有些高级服装可以用联盟小铺购买，但联盟币需要优先购买联盟小铺限定物品、染料以及技能书；而星光币优先购买设计图。
+显示的结果：
+    注意：已经足够的东西不显示。
+    第一部分：需要完成的任务，尚需获得的物品信息列表。例如：
+        公主级8-1，容颜4/6
+        公主级8-8，嫣红履1/16
+    第二部分：需要准备的原材料，如：
+        星辰黑：3/15
+        典雅紫：8/10
+        制作材料：XXXX/XXXX
+    第三部分：购买、合成所需的货币列表
+        金币：XXXX
+        钻石：XXXX
+        星光币：XXXX
+        联盟币：XXXX
+
+======================================
+《数据库初始数据设定》
+采用一个mml脚本，用户可以随时用该脚本创建一个没有item和task，但item-type、task-type等都已经设好的数据库。
+还可以有另一个更大的mml脚本，除了添加item-type、task-type外，将各种类型0和类型1的item、各种task-chapter和task-stage都添加好的数据库。
+原则：往任何一张表里添加记录时，不会往其他表插入、修改数据。例如，添加task-reward时，task-type，task-chapter，task-stage、reward-item-id都应该已经添加到各自的表中了，否则只有添加失败。

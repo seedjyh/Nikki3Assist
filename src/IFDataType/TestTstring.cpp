@@ -10,7 +10,7 @@
 
 #ifdef _GTEST_
 
-// Tested or implemented header
+// Inherit header
 #include "Tstring.h"
 
 // C system headers

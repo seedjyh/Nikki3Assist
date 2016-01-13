@@ -24,6 +24,7 @@
 #include "IFMacros/BasicOperateMacro.h"
 #include "IFDataType/Tstring.h"
 #include "IFDataType/IFException.h"
+#include "IFOperator/CodeTransformer.h"
 
 ProgramArguments* ProgramArguments::instance_ = NULL;
 
@@ -66,38 +67,24 @@ void ProgramArguments::Initialize(int argc, const char * const *argv)
 
     if (option_map.count("database"))
     {
-        sqlite_file_path_ = option_map["database"].as<std::string>();
+        sqlite_file_path_ = CodeTransformer::TransStringToTString(option_map["database"].as<std::string>());
     }
     else
     {
-        sqlite_file_path_.assign("mydata.sqlite");
+        sqlite_file_path_.assign(_T("mydata.sqlite"));
     }
 
-    if (option_map.count("import"))
+    if (option_map.count("execute"))
     {
-        action_type_ = eProgramActionType_ImportData;
-        source_xml_file_path_ = option_map["import"].as<std::string>();
+        action_type_ = eProgramActionType_ExecuteMMLCommand;
+        mml_to_execute_ = option_map["execute"].as<std::string>();
         return;
     }
 
-    if (option_map.count("export"))
+    if (option_map.count("source"))
     {
-        action_type_ = eProgramActionType_ExportData;
-        destination_xml_file_path_ = option_map["export"].as<std::string>();
-        return;
-    }
-
-    if (option_map.count("query"))
-    {
-        action_type_ = eProgramActionType_QueryClotheInfo;
-        queried_item_id_ = option_map["query"].as<int>();
-        return;
-    }
-
-    if (option_map.count("acquire"))
-    {
-        action_type_ = eProgramActionType_ShowClotheAcquisitionMean;
-        queried_item_id_ = option_map["acquire"].as<int>();
+        action_type_ = eProgramActionType_ExecuteMMLScriptFile;
+        mml_file_to_execute_ = CodeTransformer::TransStringToTString(option_map["source"].as<std::string>());
         return;
     }
 
@@ -118,10 +105,8 @@ ProgramArguments::ProgramArguments()
         ("help,h", "print this message")
         ("version,v", "print version of VXI")
         ("database,d", boost::program_options::value<std::string>(), "sqlite database file path")
-        ("import,i", boost::program_options::value<std::string>(), "import data from file to database")
-        ("export,e", boost::program_options::value<std::string>(), "export data from database to file")
-        ("query,q", boost::program_options::value<int>(), "query information of item")
-        ("acquire,a", boost::program_options::value<int>(), "show acquisition mean of item")
+        ("execute,e", boost::program_options::value<std::string>(), "execute an MML")
+        ("source,s", boost::program_options::value<std::string>(), "execute a MML script file")
         ;
 }
 

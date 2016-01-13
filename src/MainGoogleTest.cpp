@@ -10,7 +10,7 @@
 
 #ifdef _GTEST_
 
-// Tested or implemented header
+// Inherit header
 // ...
 
 // C system headers
@@ -23,7 +23,7 @@
 #include <gtest/gtest.h>
 
 // Headers of current project
-// ...
+#include "PauseWhenDestruct.h"
 
 int main(int arg_count, char **arg_list)
 {

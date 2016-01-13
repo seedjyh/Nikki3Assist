@@ -11,14 +11,14 @@
 #ifndef _GLOBALDATATYPE_H_
 #define _GLOBALDATATYPE_H_ 1
 
-// Tested or implemented header
+// Inherit header
 // ...
 
 // C system headers
 // ...
 
 // C++ system headers
-// ...
+#include <map>
 
 // Headers from other projects
 // ...
@@ -26,6 +26,13 @@
 // Headers of current project
 // ...
 
-typedef int ItemUID;
+typedef int ItemTypeID;
+
+typedef int ItemID;
+typedef std::map<ItemID, int> Materials;
+
+typedef ItemID ItemIDInGame;
+
+typedef int TaskID;
 
 #endif

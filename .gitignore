@@ -37,3 +37,6 @@
 /DebugGoogleTest/
 /Debug/
 /bin/
+
+# Others
+*.rar

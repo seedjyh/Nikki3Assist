@@ -11,7 +11,7 @@
 #ifndef _GLOBALENUM_H_
 #define _GLOBALENUM_H_ 1
 
-// Tested or implemented header
+// Inherit header
 // ...
 
 // C system headers
@@ -31,10 +31,8 @@ enum eProgramActionType
     eProgramActionType_Unknown = 0,
     eProgramActionType_ShowVersion,
     eProgramActionType_ShowHelp,
-    eProgramActionType_ImportData,
-    eProgramActionType_ExportData,
-    eProgramActionType_QueryClotheInfo,
-    eProgramActionType_ShowClotheAcquisitionMean
+    eProgramActionType_ExecuteMMLCommand,
+    eProgramActionType_ExecuteMMLScriptFile
 };
 
 #endif

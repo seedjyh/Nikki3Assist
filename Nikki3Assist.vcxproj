@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugGoogleTest|Win32">
+      <Configuration>DebugGoogleTest</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -22,6 +26,12 @@
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGoogleTest|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
@@ -35,6 +45,9 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugGoogleTest|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -42,6 +55,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>.\bin\</OutDir>
+    <IncludePath>./src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugGoogleTest|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>.\bin_gtest\</OutDir>
     <IncludePath>./src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -60,6 +78,23 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugGoogleTest|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_GTEST_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Shlwapi.lib;gtestd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -81,25 +116,82 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DatabaseOperator.h" />
+    <ClInclude Include="src\DataHolderFileOperator.h" />
+    <ClInclude Include="src\DirectoryHolder.h" />
+    <ClInclude Include="src\exception\DatabaseInconsistencyException.h" />
+    <ClInclude Include="src\exception\ExecuteSQLFailedException.h" />
+    <ClInclude Include="src\exception\MMLFormatErrorException.h" />
+    <ClInclude Include="src\exception\MMLNoSuchArgumentException.h" />
+    <ClInclude Include="src\exception\MMLScriptFileFormatErrorException.h" />
+    <ClInclude Include="src\exception\NoSuchItemNameException.h" />
+    <ClInclude Include="src\exception\NoSuchItemIDException.h" />
+    <ClInclude Include="src\exception\UnknownMMLTypeException.h" />
     <ClInclude Include="src\GlobalDataType.h" />
     <ClInclude Include="src\GlobalEnum.h" />
+    <ClInclude Include="src\IFDataType\DataHolder.h" />
     <ClInclude Include="src\IFDataType\IFException.h" />
     <ClInclude Include="src\IFDataType\IFStackTraceInfo.h" />
     <ClInclude Include="src\IFDataType\IFThrowable.h" />
+    <ClInclude Include="src\IFDataType\Locker.h" />
+    <ClInclude Include="src\IFDataType\PathTypes.h" />
     <ClInclude Include="src\IFDataType\Tstring.h" />
     <ClInclude Include="src\IFMacros\BasicMacro.h" />
     <ClInclude Include="src\IFMacros\BasicOperateMacro.h" />
     <ClInclude Include="src\IFMacros\BasicProcessMacro.h" />
     <ClInclude Include="src\IFMacros\DevelopMacros.h" />
     <ClInclude Include="src\IFMacros\SleepMacro.h" />
+    <ClInclude Include="src\IFOperator\CodeTransformer.h" />
+    <ClInclude Include="src\IFOperator\NumberOperator.h" />
+    <ClInclude Include="src\IFOperator\PathHandler.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLExecuteResult.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLExecuteResultImpl.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLiteHandle.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLiteHandleFactory.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLiteHandleImpl.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLiteHandleLockCtrl.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLiteLogger.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\sqlitesrc\sqlite3.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\sqlitesrc\sqlite3ext.h" />
+    <ClInclude Include="src\IFSQLiteAdaptor\SQLResultDataStructure.h" />
+    <ClInclude Include="src\ItemAcquisition.h" />
+    <ClInclude Include="src\ItemInfo.h" />
+    <ClInclude Include="src\MMLCommand.h" />
+    <ClInclude Include="src\MMLCommandFactory.h" />
+    <ClInclude Include="src\MMLExecutor.h" />
+    <ClInclude Include="src\PauseWhenDestruct.h" />
     <ClInclude Include="src\ProgramArguments.h" />
+    <ClInclude Include="src\System.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DatabaseOperator.cpp" />
+    <ClCompile Include="src\DataHolderFileOperator.cpp" />
+    <ClCompile Include="src\IFDataType\DataHolder.cpp" />
+    <ClCompile Include="src\IFDataType\Locker.cpp" />
     <ClCompile Include="src\IFDataType\TestTstring.cpp" />
     <ClCompile Include="src\IFDataType\Tstring.cpp" />
+    <ClCompile Include="src\IFOperator\CodeTransformer.cpp" />
+    <ClCompile Include="src\IFOperator\NumberOperator.cpp" />
+    <ClCompile Include="src\IFOperator\PathHandler.cpp" />
+    <ClCompile Include="src\IFSQLiteAdaptor\SQLiteHandleFactory.cpp" />
+    <ClCompile Include="src\IFSQLiteAdaptor\SQLiteHandleImpl.cpp" />
+    <ClCompile Include="src\IFSQLiteAdaptor\SQLiteHandleLockCtrl.cpp" />
+    <ClCompile Include="src\IFSQLiteAdaptor\SQLiteLogger.cpp" />
+    <ClCompile Include="src\IFSQLiteAdaptor\sqlitesrc\sqlite3.c" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MainGoogleTest.cpp" />
+    <ClCompile Include="src\MMLCommand.cpp" />
+    <ClCompile Include="src\MMLCommandFactory.cpp" />
+    <ClCompile Include="src\MMLExecutor.cpp" />
     <ClCompile Include="src\ProgramArguments.cpp" />
+    <ClCompile Include="src\System.cpp" />
+    <ClCompile Include="src\TestDatabaseOperator.cpp" />
+    <ClCompile Include="src\TestDataHolderFileOperator.cpp" />
+    <ClCompile Include="src\TestMMLCommandFactory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="doc\design.txt" />
+    <Text Include="doc\mml_design.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

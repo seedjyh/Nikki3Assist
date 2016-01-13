@@ -1,18 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nikki3Assist", "Nikki3Assist.vcxproj", "{568271E6-1043-4123-B80B-0E7BFFF58246}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		DebugGoogleTest|Win32 = DebugGoogleTest|Win32
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{568271E6-1043-4123-B80B-0E7BFFF58246}.Debug|Win32.ActiveCfg = Debug|Win32
 		{568271E6-1043-4123-B80B-0E7BFFF58246}.Debug|Win32.Build.0 = Debug|Win32
+		{568271E6-1043-4123-B80B-0E7BFFF58246}.DebugGoogleTest|Win32.ActiveCfg = DebugGoogleTest|Win32
+		{568271E6-1043-4123-B80B-0E7BFFF58246}.DebugGoogleTest|Win32.Build.0 = DebugGoogleTest|Win32
 		{568271E6-1043-4123-B80B-0E7BFFF58246}.Release|Win32.ActiveCfg = Release|Win32
 		{568271E6-1043-4123-B80B-0E7BFFF58246}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection

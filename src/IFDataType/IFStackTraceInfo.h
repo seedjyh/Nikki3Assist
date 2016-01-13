@@ -11,7 +11,7 @@
 #ifndef _IFDATATYPE_SRC_IFSTACKTRACEINFO_H_
 #define _IFDATATYPE_SRC_IFSTACKTRACEINFO_H_ 1
 
-// Tested or implemented header
+// Inherit header
 // ...
 
 // C system headers

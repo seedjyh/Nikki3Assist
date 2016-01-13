@@ -38,9 +38,9 @@ class ProgramArguments
     boost::program_options::options_description option_desc_;
 
     eProgramActionType action_type_;
-    std::string sqlite_file_path_;
-    std::string source_xml_file_path_;
-    std::string destination_xml_file_path_;
+    Tstring sqlite_file_path_;
+    std::string mml_to_execute_;
+    Tstring mml_file_to_execute_;
     int queried_item_id_;
 public:
     static ProgramArguments& Instance();
@@ -49,10 +49,10 @@ public:
     std::string GetArgumentHelp() const;
 
     eProgramActionType action_type() const { return action_type_; }
-    std::string sqlite_file_path() const { return sqlite_file_path_; }
-    std::string source_xml_file_path() const { return source_xml_file_path_; }
-    std::string destination_xml_file_path() const { return destination_xml_file_path_; }
-    ItemUID queried_item_id() const { return queried_item_id_; }
+    const Tstring& sqlite_file_path() const { return sqlite_file_path_; }
+    const std::string& mml_to_execute() const { return mml_to_execute_; }
+    const Tstring& mml_file_to_execute() const { return mml_file_to_execute_; }
+    ItemID queried_item_id() const { return queried_item_id_; }
 protected:
 private:
     ProgramArguments();

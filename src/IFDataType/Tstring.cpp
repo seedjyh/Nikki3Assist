@@ -8,7 +8,7 @@
 //   Create datetime: 2011-03-23 00:26:23
 //
 
-// Tested or implemented header
+// Inherit header
 #include "Tstring.h"
 
 // C system headers

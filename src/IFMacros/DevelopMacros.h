@@ -11,7 +11,7 @@
 #ifndef _IFMACROS_DEVELOPMACROS_H_
 #define _IFMACROS_DEVELOPMACROS_H_ 1
 
-// Tested or implemented header
+// Inherit header
 // ...
 
 // C system headers

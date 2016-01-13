@@ -11,7 +11,7 @@
 #ifndef _IFDATATYPE_SRC_IFEXCEPTION_H_
 #define _IFDATATYPE_SRC_IFEXCEPTION_H_ 1
 
-// Tested or implemented header
+// Inherit header
 #include "IFThrowable.h"
 
 // C system headers
