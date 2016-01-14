@@ -120,10 +120,12 @@
     <ClInclude Include="src\DataHolderFileOperator.h" />
     <ClInclude Include="src\DirectoryHolder.h" />
     <ClInclude Include="src\exception\DatabaseInconsistencyException.h" />
+    <ClInclude Include="src\exception\DuplicateArgumentNameException.h" />
     <ClInclude Include="src\exception\ExecuteSQLFailedException.h" />
     <ClInclude Include="src\exception\MMLFormatErrorException.h" />
     <ClInclude Include="src\exception\MMLNoSuchArgumentException.h" />
     <ClInclude Include="src\exception\MMLScriptFileFormatErrorException.h" />
+    <ClInclude Include="src\exception\NoSuchArgumentException.h" />
     <ClInclude Include="src\exception\NoSuchItemNameException.h" />
     <ClInclude Include="src\exception\NoSuchItemIDException.h" />
     <ClInclude Include="src\exception\UnknownMMLTypeException.h" />
@@ -156,9 +158,13 @@
     <ClInclude Include="src\IFSQLiteAdaptor\SQLResultDataStructure.h" />
     <ClInclude Include="src\ItemAcquisition.h" />
     <ClInclude Include="src\ItemInfo.h" />
+    <ClInclude Include="src\ItemNamePair.h" />
+    <ClInclude Include="src\ItemAmount.h" />
+    <ClInclude Include="src\MMLArgumentSet.h" />
     <ClInclude Include="src\MMLCommand.h" />
     <ClInclude Include="src\MMLCommandFactory.h" />
     <ClInclude Include="src\MMLExecutor.h" />
+    <ClInclude Include="src\MMLParser.h" />
     <ClInclude Include="src\PauseWhenDestruct.h" />
     <ClInclude Include="src\ProgramArguments.h" />
     <ClInclude Include="src\System.h" />
@@ -180,14 +186,16 @@
     <ClCompile Include="src\IFSQLiteAdaptor\sqlitesrc\sqlite3.c" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MainGoogleTest.cpp" />
-    <ClCompile Include="src\MMLCommand.cpp" />
+    <ClCompile Include="src\MMLArgumentSet.cpp" />
     <ClCompile Include="src\MMLCommandFactory.cpp" />
     <ClCompile Include="src\MMLExecutor.cpp" />
+    <ClCompile Include="src\MMLParser.cpp" />
     <ClCompile Include="src\ProgramArguments.cpp" />
     <ClCompile Include="src\System.cpp" />
     <ClCompile Include="src\TestDatabaseOperator.cpp" />
     <ClCompile Include="src\TestDataHolderFileOperator.cpp" />
     <ClCompile Include="src\TestMMLCommandFactory.cpp" />
+    <ClCompile Include="src\TestMMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="doc\design.txt" />

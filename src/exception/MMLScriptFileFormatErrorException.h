@@ -31,7 +31,7 @@ class MMLScriptFileFormatErrorException: public IFException
 public:
     MMLScriptFileFormatErrorException(const Tstring &kScriptFilePath, const std::string &kDetails)
     :   IFException(std::string("MML script file \"") + CodeTransformer::TransTstringToString(kScriptFilePath) + "\" has format error: " + kDetails){}
-    ~MMLScriptFileFormatErrorException(){}
+    virtual ~MMLScriptFileFormatErrorException(){}
 protected:
 private:
 };

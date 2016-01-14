@@ -25,25 +25,22 @@
 
 // Headers of current project
 #include "GlobalDataType.h"
+#include "ItemNamePair.h"
 
 // This class would not contain ItemUID.
 class ItemInfo
 {
-    const std::string kName_;
-    const std::string kTypeName_;
+    const ItemNamePair kNamePair_;
     const ItemIDInGame kIDInGame_;
 public:
     ItemInfo(
-        const std::string &kName,
-        const std::string &kTypeName,
+        const ItemNamePair &kNamePair,
         const ItemIDInGame &kIDInGame
-    ) : kName_(kName),
-        kTypeName_(kTypeName),
+    ) : kNamePair_(kNamePair),
         kIDInGame_(kIDInGame){}
     ~ItemInfo(){}
 
-    const std::string& name() const { return kName_; }
-    const std::string& type_name() const { return kTypeName_; }
+    const ItemNamePair& name_pair() const { return kNamePair_; }
     const ItemIDInGame id_in_game() const { return kIDInGame_; }
     void Print(){}
 protected:

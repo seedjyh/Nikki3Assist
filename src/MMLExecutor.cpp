@@ -33,14 +33,14 @@
 
 MMLProcessorMap MMLExecutor::s_processors_;
 
-void MMLExecutor::ExecuteSingleCommand(const MMLCOMMAND_PTR &kCommand)
+void MMLExecutor::ExecuteSingleCommand(const MMLCommand &kCommand)
 {
-    MMLProcessorMap::const_iterator ite = s_processors_.find(kCommand->type());
+    MMLProcessorMap::const_iterator ite = s_processors_.find(kCommand.name());
     if (s_processors_.end() == ite)
     {
-        throw UnknownMMLTypeException(kCommand->type());
+        throw UnknownMMLTypeException(kCommand.name());
     }
-    ite->second(db_, kCommand->arguments());
+    ite->second(db_, kCommand.arguments());
     return;
 }
 
@@ -49,30 +49,18 @@ void MMLExecutor::RegisterMMLProcessors()
     s_processors_[std::string("ADD-ITEM-INFO")] = AddItemInfo;
 }
 
-void MMLExecutor::AddItemInfo(DatabaseOperator &db, const MMLArguments &kArguments)
+void MMLExecutor::AddItemInfo(DatabaseOperator &db, const MMLArgumentSet &kArguments)
 {
-    const std::string kTypeName = GetMMLArgumentValue(kArguments, std::string("type-name"));
-    const std::string kItemName = GetMMLArgumentValue(kArguments, std::string("item-name"));
-    const ItemIDInGame kIDInGame = NumberOperator::AtoI(GetMMLArgumentValue(kArguments, std::string("id-in-game")));
+    const ItemNamePair kNamePair = kArguments.GetItemNamePair(std::string("NAME"));
+    const int kIDInGame = kArguments.GetInteger(std::string("ID_IN_GAME"));
     try
     {
-        ItemID item_id = db.QueryItemID(kTypeName, kItemName);
-        db.UpdateItemInfo(item_id, ITEMINFO_PTR(new ItemInfo(kItemName, kTypeName, kIDInGame)));
+        ItemID item_id = db.QueryItemID(kNamePair.name(), kNamePair.type_name());
+        db.UpdateItemInfo(item_id, ITEMINFO_PTR(new ItemInfo(kNamePair, kIDInGame)));
     }
     catch (NoSuchItemNameException &)
     {
-        db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kItemName, kTypeName, kIDInGame)));
+        db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kNamePair, kIDInGame)));
     }
     return;
-}
-
-//////////////////////////////////////////////////////////////////////////
-const std::string& MMLExecutor::GetMMLArgumentValue(const MMLArguments &kArguments, const std::string &kName)
-{
-    MMLArguments::const_iterator ite = kArguments.find(kName);
-    if (kArguments.end() == ite)
-    {
-        throw MMLNoSuchArgumentException(kName);
-    }
-    return ite->second;
 }

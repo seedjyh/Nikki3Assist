@@ -1,0 +1,6 @@
+MMLCommandFactory
+	从静态类变成实体类。
+	添加函数Init()，用于初始化argument格式列表。
+
+MMLExecutor
+	针对每一种解析出来的MMLCommand，进行处理。

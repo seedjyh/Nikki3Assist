@@ -46,7 +46,7 @@ void System::Run()
     else if (eProgramActionType_ExecuteMMLCommand == ProgramArguments::Instance().action_type())
     {
         MMLExecutor mml_executor(DatabaseOperator(ProgramArguments::Instance().sqlite_file_path()));
-        mml_executor.ExecuteSingleCommand(MMLCommandFactory::Create(ProgramArguments::Instance().mml_to_execute()));
+        mml_executor.ExecuteSingleCommand(*MMLCommandFactory::Create(ProgramArguments::Instance().mml_to_execute()));
         std::cout << "Execute MML: " << ProgramArguments::Instance().mml_to_execute() << std::endl;
     }
     else if (eProgramActionType_ExecuteMMLScriptFile == ProgramArguments::Instance().action_type())
@@ -55,7 +55,7 @@ void System::Run()
         MMLExecutor mml_executor(DatabaseOperator(ProgramArguments::Instance().sqlite_file_path()));
         for (MMLList::const_iterator ite = mml_list.begin(); ite != mml_list.end(); ++ite)
         {
-            mml_executor.ExecuteSingleCommand(*ite);
+            mml_executor.ExecuteSingleCommand(**ite);
         }
         std::cout << "Execute MML file: " <<  CodeTransformer::TransTstringToString(ProgramArguments::Instance().mml_file_to_execute()) << std::endl;
     }

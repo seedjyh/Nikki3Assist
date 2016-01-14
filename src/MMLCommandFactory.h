@@ -41,8 +41,7 @@ protected:
 private:
     MMLCommandFactory(){}
     ~MMLCommandFactory(){}
-    static void ParseMMLCommandText(const std::string &kText, std::string &ret_type, MMLArguments &ret_arguments);
-    static int JumpBlankCharacter(const std::string &kText, int now_index);
+    static void ParseMMLCommandText(const std::string &kText, std::string &ret_type, MMLArgumentSet &ret_arguments);
     static std::string ReadLetterSeries(const char kText[]);
     static std::string ReadQuotation(const char kText[]);
     static std::string ReadNumber(const char kText[]);

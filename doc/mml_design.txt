@@ -1,34 +1,36 @@
-ADD-ITEM-TYPE: TYPE="";
-ADD-ITEM-INFO: ITEM="{ItemA|TypeA}", ID_IN_GAME=;
-SET-ITEM-PRICE: ITEM="{ItemA|TypeA}", MONEY="{ItemB|TypeB}", PRICE=;
-SET-ITEM-STOCK: ITEM="{ItemA|TypeA}", COUNT=;
-ADD-CREATING-RULE: PRODUCT="{ItemP|TypeP}", RAW_MATERIALS="{ItemA|TypeA}*3+{ItemB|TypeB}*5+{ItemC|TypeC}*4000";
-ADD-DYEING-RULE: PRODUCT="{ItemP|TypeP}", RAW_MATERIALS="{ItemA|TypeA}*1+{ItemB|TypeB}*5+{ItemC|TypeC}*4000";
-ADD-TASK: TYPE="", CHAPTER="", STAGE="";
-SET-TASK-REWARDS: TYPE="", CHAPTER="", STAGE="", REWARD_ITEM="{ItemR|TypeR}";
-SHOW-ITEM-INFO: ITEM="{ItemA|TypeA}";
-SHOW-ITEM-ACQUISITION-MEAN: TARGETS="{ItemA|TypeA}*1+{ItemB|TypeB}*1+{ItemC|TypeC}*1";
+[TYPE DEFINE]
+Integer     :=  [1-9][0-9]*
+String      :=  "XXXX"
+ItemNamePair:=  (String|String)
+ItemAmount   :=  ItemNamePair*Integer
+Formular    :=  \[ItemAmount[+ItemAmount]*\]
 
-Consider a meta-data of MML.
-The meta-data could be an XML string. Such as:
-    <MML TYPE="ADD-ITEM-TYPE">
-        <ARGUMENT NAME="ITEM-A", TYPE="STRING" />
-        <ARGUMENT NAME="ITEM-B", TYPE="INTEGER" />
-        <ARGUMENT NAME="ITEM-C", TYPE="ITEM-AMOUNT" />
-        <ARGUMENT NAME="ITEM-D", TYPE="ITEM-FORMULAR" />
-    </MML>
-Argument of MML has 3 types: integer, string, Item-Name-Pair-List.
-Item-Name-Pair-List could be:
-    "{ItemA|TypeA}"
-    "{ItemA|TypeA}*1"
-    "{ItemA|TypeA}*2"
-    "2{ItemA|TypeA}"
-    "{ItemA|TypeA}*1+{ItemB|TypeB}*5+{ItemC|TypeC}*4000"
-Each type has its own way to parse.
-Parsing functions and manual pages would be generated automatically based on the meta-data of MML.
-If any MML defined in meta-data XML has not got any process function, initiation would failed.
+ADD-ITEM-TYPE: TYPE="String"
+ADD-ITEM-INFO: NAME="ItemNamePair", ID_IN_GAME="Integer"
+SET-ITEM-PRICE: ITEM="ItemNamePair", PRICE="ItemAmount"
+SET-ITEM-STOCK: ITEM="ItemNamePair", COUNT="Integer"
+ADD-CREATING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
+ADD-DYEING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
+ADD-TASK: TYPE="String", CHAPTER="String", STAGE="String"
+SET-TASK-REWARD: TYPE="String", CHAPTER="String", STAGE="String", REWARDS="ItemNamePair"
+SHOW-ITEM-INFO: ITEM="ItemNamePair"
+SHOW-ITEM-ACQUISITION-MEAN: TARGET="Formular"
 
-Other command such as deleting something would be done later.
-There might be a command "EXPORT-DATA-TO-FILE" to export all data in database in a MML script as backup.
-Tips: Prepare a MML script including all items, rules prices and tasks.
-      Edit this script, but not the database.
+======================
+
+MMLParser("ADD-CREATING-RULE")("PRODUCT", "ItemNamePairParser")("RAW-MATERIALS", "FormularParser") // The second string is argument-type, which should be save in a const std::string.  
+           MMLParser::MMLParser(const char command_name[])
+MMLParser& MMLParser::operator(const char kArgumentName[], ArgumentParser)
+    return *this
+bool MMLParser::CheckName(const char kMMLText[])
+MMLCommandPtr MMLParser::Parse(const char kMMLText)
+
+typedef std::list<MMLParser> MMLParserList;
+
+<MMLArgumentSet>
+    int MMLArgumentSet::GetInegerArguemnt(const std::string &kName)
+    std::string MMLArgumentSet::GetStringArguemnt(const std::string &kName)
+    ItemNamePair MMLArgumentSet::GetItemNamePair(const std::string &kName)
+    ItemAmount MMLArgumentSet::GetItemAmount(const std::string &kName)
+    Formular MMLArgumentSet::GetFormular(const std::string &kName)
+    If no such argument with same name and type, throw NoSuchArgumentException(argument_name, argument_type)

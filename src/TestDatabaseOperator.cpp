@@ -43,7 +43,7 @@ TEST(DatabaseOperator, AddItemInfo_NoSuchItemType)
     DirectoryHolder dir_holder(s_kTestDirectoryPath);
     DatabaseOperator db(s_kDatabaseFilePath);
     ASSERT_THROW(
-        db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(std::string("item name"), std::string("type name"), 99))),
+        db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(std::string("item name"), std::string("type name")), 99))),
         DatabaseInconsistencyException
     );
 }
@@ -57,8 +57,8 @@ TEST(DatabaseOperator, AddItemInfo_DuplicateItemNameAndItemType)
     DirectoryHolder dir_holder(s_kTestDirectoryPath);
     DatabaseOperator db(s_kDatabaseFilePath);
     ASSERT_NO_THROW(db.AddItemType(kTypeName));
-    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kItemName, kTypeName, kIDInGame_1))));
-    ASSERT_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kItemName, kTypeName, kIDInGame_2))), DatabaseInconsistencyException);
+    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(kItemName, kTypeName), kIDInGame_1))));
+    ASSERT_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(kItemName, kTypeName), kIDInGame_2))), DatabaseInconsistencyException);
 }
 
 TEST(DatabaseOperator, AddItemInfo_DuplicateIDInGame)
@@ -72,8 +72,8 @@ TEST(DatabaseOperator, AddItemInfo_DuplicateIDInGame)
     DatabaseOperator db(s_kDatabaseFilePath);
     ASSERT_NO_THROW(db.AddItemType(kTypeName_1));
     ASSERT_NO_THROW(db.AddItemType(kTypeName_2));
-    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kItemName_1, kTypeName_1, kIDInGame))));
-    ASSERT_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kItemName_2, kTypeName_2, kIDInGame))), DatabaseInconsistencyException);
+    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(kItemName_1, kTypeName_1), kIDInGame))));
+    ASSERT_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(kItemName_2, kTypeName_2), kIDInGame))), DatabaseInconsistencyException);
 }
 
 TEST(DatabaseOperator, QueryItemID_QueryItemInfo)
@@ -84,7 +84,7 @@ TEST(DatabaseOperator, QueryItemID_QueryItemInfo)
     DirectoryHolder dir_holder(s_kTestDirectoryPath);
     DatabaseOperator db(s_kDatabaseFilePath);
     ASSERT_NO_THROW(db.AddItemType(kTypeName));
-    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kItemName, kTypeName, kIDInGame))));
+    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(kItemName, kTypeName), kIDInGame))));
     ASSERT_THROW(db.QueryItemID(kItemName + "abc", kTypeName), NoSuchItemNameException);
     ASSERT_THROW(db.QueryItemID(kItemName, kTypeName + "def"), DatabaseInconsistencyException);
     ItemID item_id = 0;
@@ -94,8 +94,8 @@ TEST(DatabaseOperator, QueryItemID_QueryItemInfo)
     ASSERT_THROW(db.QueryItemInfo(item_id + 1), NoSuchItemIDException);
     ASSERT_NO_THROW(query_result_item_info = db.QueryItemInfo(item_id));
 
-    ASSERT_STREQ(kItemName.c_str(), query_result_item_info->name().c_str());
-    ASSERT_STREQ(kTypeName.c_str(), query_result_item_info->type_name().c_str());
+    ASSERT_STREQ(kItemName.c_str(), query_result_item_info->name_pair().name().c_str());
+    ASSERT_STREQ(kTypeName.c_str(), query_result_item_info->name_pair().type_name().c_str());
     ASSERT_EQ(kIDInGame, query_result_item_info->id_in_game());
 }
 
@@ -109,7 +109,7 @@ TEST(DatabaseOperator, DeleteItemInfo)
 
     // Prepare data
     ASSERT_NO_THROW(db.AddItemType(kTypeName));
-    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kItemName, kTypeName, kIDInGame))));
+    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(kItemName, kTypeName), kIDInGame))));
 
     // try deleting
     const ItemID kItemID = db.QueryItemID(kItemName, kTypeName);
@@ -137,21 +137,21 @@ TEST(DatabaseOperator, UpdateItemInfo)
 
     // Prepare data
     ASSERT_NO_THROW(db.AddItemType(kOldTypeName));
-    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kOldItemName, kOldTypeName, kOldIDInGame))));
+    ASSERT_NO_THROW(db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(ItemNamePair(kOldItemName, kOldTypeName), kOldIDInGame))));
     const ItemID kItemID = db.QueryItemID(kOldItemName, kOldTypeName);
 
     // Try updating with wrong ID.
-    ASSERT_THROW(db.UpdateItemInfo(kItemID + 1, ITEMINFO_PTR(new ItemInfo(kNewItemName, kNewTypeName, kNewIDInGame))), NoSuchItemIDException);
+    ASSERT_THROW(db.UpdateItemInfo(kItemID + 1, ITEMINFO_PTR(new ItemInfo(ItemNamePair(kNewItemName, kNewTypeName), kNewIDInGame))), NoSuchItemIDException);
     // Try updating with type-name not exists.
-    ASSERT_THROW(db.UpdateItemInfo(kItemID, ITEMINFO_PTR(new ItemInfo(kNewItemName, kNewTypeName, kNewIDInGame))), DatabaseInconsistencyException);
+    ASSERT_THROW(db.UpdateItemInfo(kItemID, ITEMINFO_PTR(new ItemInfo(ItemNamePair(kNewItemName, kNewTypeName), kNewIDInGame))), DatabaseInconsistencyException);
 
     // Add new type name into the table ItemTypes.
     ASSERT_NO_THROW(db.AddItemType(kNewTypeName));
-    ASSERT_NO_THROW(db.UpdateItemInfo(kItemID, ITEMINFO_PTR(new ItemInfo(kNewItemName, kNewTypeName, kNewIDInGame))));
+    ASSERT_NO_THROW(db.UpdateItemInfo(kItemID, ITEMINFO_PTR(new ItemInfo(ItemNamePair(kNewItemName, kNewTypeName), kNewIDInGame))));
     ITEMINFO_PTR new_info;
     ASSERT_NO_THROW(new_info = db.QueryItemInfo(kItemID));
-    ASSERT_STREQ(kNewItemName.c_str(), new_info->name().c_str());
-    ASSERT_STREQ(kNewTypeName.c_str(), new_info->type_name().c_str());
+    ASSERT_STREQ(kNewItemName.c_str(), new_info->name_pair().name().c_str());
+    ASSERT_STREQ(kNewTypeName.c_str(), new_info->name_pair().type_name().c_str());
     ASSERT_EQ(kNewIDInGame, new_info->id_in_game());
 }
 

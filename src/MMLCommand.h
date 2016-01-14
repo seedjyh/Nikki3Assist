@@ -26,30 +26,20 @@
 // ...
 
 // Headers of current project
-// ...
-
-typedef std::string MMLArgumentName;
-typedef std::string MMLArgumentValue;
-typedef std::map<MMLArgumentName, MMLArgumentValue> MMLArguments;
-
-// Standard MML format:
-// Command-Type:;
-// Command-Type:,,,;
-// Command-Type: a = 1, b = 2, c = \"333\", d= \"abc\" ;
+#include "MMLArgumentSet.h"
 
 class MMLCommand
 {
-    const std::string kType_;
-    const MMLArguments kArguments_;
+    std::string name_;
+    MMLArgumentSet arguments_;
 public:
-    MMLCommand(const std::string &kType, const MMLArguments &kArguments)
-    :   kType_(kType),
-        kArguments_(kArguments){}
+    MMLCommand(const std::string &kName, const MMLArgumentSet &kArguments)
+    :   name_(kName),
+        arguments_(kArguments){}
     ~MMLCommand(){}
 
-    const std::string& type() const { return kType_; }
-    const MMLArguments& arguments() const { return kArguments_; }
-    const std::string& GetArgument(const std::string &kName);
+    const std::string& name() const { return name_; }
+    const MMLArgumentSet& arguments() const { return arguments_; }
 protected:
 private:
 };

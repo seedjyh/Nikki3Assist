@@ -31,7 +31,7 @@ class MMLFormatErrorException : public IFException
 public:
     MMLFormatErrorException(const std::string &kText, const std::string &kDetails)
     :   IFException(std::string("MML format error, command=\"") + kText + "\", details=" + kDetails){}
-    ~MMLFormatErrorException(){}
+    virtual ~MMLFormatErrorException(){}
 protected:
 private:
 };

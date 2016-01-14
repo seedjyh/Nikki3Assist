@@ -71,20 +71,20 @@ void DatabaseOperator::AddItemType(const std::string &kTypeName)
 void DatabaseOperator::AddItemInfo(const ITEMINFO_PTR &kItemInfo)
 {
     // query item-type-id, assure the existence of type-name.
-    ItemTypeID type_id = QueryItemTypeID(kItemInfo->type_name());
+    ItemTypeID type_id = QueryItemTypeID(kItemInfo->name_pair().type_name());
 
     // check duplication of type-name and item-name
     std::stringstream sql;
     sql << "select id from Items where ";
-    sql << "    name = \"" << kItemInfo->name() << "\" and";
+    sql << "    name = \"" << kItemInfo->name_pair().name() << "\" and";
     sql << "    type_id = " << type_id;
     SQLEXECUTERESULT_PTR result = db_handler_->ExecuteSQL(sql.str());
     AssertSQLReturnCode(sql.str(), result);
     if (result->GetLineCount() > 0)
     {
         throw DatabaseInconsistencyException(std::string(
-            "Item with name \"") + kItemInfo->name() + "\"" +
-            " and type-name \"" + kItemInfo->type_name() + "\"" +
+            "Item with name \"") + kItemInfo->name_pair().name() + "\"" +
+            " and type-name \"" + kItemInfo->name_pair().type_name() + "\"" +
             " has already exist");
     }
 
@@ -103,7 +103,7 @@ void DatabaseOperator::AddItemInfo(const ITEMINFO_PTR &kItemInfo)
     // insert record
     sql.str("");
     sql << "insert into Items(name, type_id, id_in_game) values(";
-    sql << "    \"" << kItemInfo->name() << "\", ";
+    sql << "    \"" << kItemInfo->name_pair().name() << "\", ";
     sql << "    " << type_id << ", ";
     sql << "    " << kItemInfo->id_in_game();
     sql << ")";
@@ -145,11 +145,11 @@ void DatabaseOperator::DeleteItemInfo(const ItemID &kID)
 void DatabaseOperator::UpdateItemInfo(const ItemID &kID, const ITEMINFO_PTR &kItemInfo)
 {
     ITEMINFO_PTR old_info = QueryItemInfo(kID); // Confirm the existence of target record.
-    const ItemTypeID kTypeID = QueryItemTypeID(kItemInfo->type_name());
+    const ItemTypeID kTypeID = QueryItemTypeID(kItemInfo->name_pair().type_name());
 
     std::stringstream sql;
     sql << "update Items set ";
-    sql << "    name = \"" << kItemInfo->name() << "\", ";
+    sql << "    name = \"" << kItemInfo->name_pair().name() << "\", ";
     sql << "    type_id = " << kTypeID << ", ";
     sql << "    id_in_game = " << kItemInfo->id_in_game() << " ";
     sql << "where id = " << kID;
@@ -181,7 +181,7 @@ ITEMINFO_PTR DatabaseOperator::QueryItemInfo(const ItemID &kID)
     const ItemTypeID kTypeID = NumberOperator::AtoI(result->GetResult(0, 1));
     const ItemIDInGame kIDInGame = NumberOperator::AtoI(result->GetResult(0, 2));
     const std::string kTypeName = QueryItemTypeName(kTypeID);
-    return ITEMINFO_PTR(new ItemInfo(kItemName, kTypeName, kIDInGame));
+    return ITEMINFO_PTR(new ItemInfo(ItemNamePair(kItemName, kTypeName), kIDInGame));
 }
 
 //////////////////////////////////////////////////////////////////////////

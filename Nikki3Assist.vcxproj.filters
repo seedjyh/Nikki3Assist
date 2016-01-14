@@ -166,6 +166,24 @@
     <ClInclude Include="src\exception\NoSuchItemIDException.h">
       <Filter>src\exception</Filter>
     </ClInclude>
+    <ClInclude Include="src\MMLParser.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ItemNamePair.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ItemAmount.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MMLArgumentSet.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exception\DuplicateArgumentNameException.h">
+      <Filter>src\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exception\NoSuchArgumentException.h">
+      <Filter>src\exception</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -234,11 +252,17 @@
     <ClCompile Include="src\TestMMLCommandFactory.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\MMLCommand.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\IFOperator\NumberOperator.cpp">
       <Filter>src\IFOperator</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MMLParser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestMMLParser.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MMLArgumentSet.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -18,17 +18,19 @@
 // ...
 
 // C++ system headers
-// ...
+#include <map>
 
 // Headers from other projects
 // ...
 
 // Headers of current project
-#include "MMLCommand.h"
+// ...
 
 class DatabaseOperator;
+class MMLArgumentSet;
+class MMLCommand;
 
-typedef void MMLProcessor(DatabaseOperator &, const MMLArguments &);
+typedef void MMLProcessor(DatabaseOperator &, const MMLArgumentSet &);
 typedef std::map<std::string, MMLProcessor*> MMLProcessorMap;
 
 class MMLExecutor
@@ -46,12 +48,11 @@ public:
     }
     ~MMLExecutor(){}
 
-    void ExecuteSingleCommand(const MMLCOMMAND_PTR &kCommand);
+    void ExecuteSingleCommand(const MMLCommand &kCommand);
 protected:
 private:
     static void RegisterMMLProcessors();
     static MMLProcessor AddItemInfo;
-    static const std::string& GetMMLArgumentValue(const MMLArguments &kArguments, const std::string &kName);
 };
 
 #endif
