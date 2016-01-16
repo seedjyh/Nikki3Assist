@@ -24,135 +24,22 @@
 #include "exception/MMLFormatErrorException.h"
 #include "DataHolderFileOperator.h"
 
-MMLCOMMAND_PTR MMLCommandFactory::Create(const std::string &kCommandText)
+MMLCOMMAND_PTR MMLCommandFactory::ParseSingleCommand(const std::string &kText)
 {
-    std::string type;
-    MMLArgumentSet arguments;
-    ParseMMLCommandText(kCommandText, type, arguments);
-    return MMLCOMMAND_PTR(new MMLCommand(type, arguments));
-}
-
-void MMLCommandFactory::ParseMMLCommandText(const std::string &kText, std::string &ret_type, MMLArgumentSet &ret_arguments)
-{
-    //ret_type.clear();
-    //ret_arguments.clear();
-
-    //if (kText.empty())
-    //{
-    //    throw MMLFormatErrorException(kText, "command should not be empty");
-    //}
-
-    //int i = JumpBlankCharacter(kText, 0);
-    //// remove brank part at the beginning
-
-    //if (!isalpha(kText[i]))
-    //{
-    //    throw MMLFormatErrorException(kText, std::string("command type should start with letter"));
-    //}
-
-    //// type
-    //for (; i < static_cast<int>(kText.size()); i++)
-    //{
-    //    if (
-    //        ('-' == kText[i]) ||
-    //        (isalpha(kText[i]))
-    //        )
-    //    {
-    //        ret_type += kText[i];
-    //    }
-    //    else if (':' == kText[i])
-    //    {
-    //        break;
-    //    }
-    //    else
-    //    {
-    //        throw MMLFormatErrorException(kText, std::string("Found unacceptable character in command type part: \'") + kText[i] + "\'");
-    //    }
-    //}
-
-    //if (kText[i] != ':')
-    //{
-    //    throw MMLFormatErrorException(kText, std::string("Failed to find \':\' in command type part"));
-    //}
-    //else
-    //{
-    //    i++; // jump ':'
-    //}
-
-    //// arguments
-    //while (1)
-    //{
-    //    i = JumpBlankCharacter(kText, i);
-    //    if (';' == kText[i])
-    //    {
-    //        break;
-    //    }
-    //    else if (',' == kText[i]) // empty argument
-    //    {
-    //        i++;
-    //        continue;
-    //    }
-
-    //    std::string argument_name = ReadLetterSeries(kText.c_str() + i);
-    //    if (argument_name.empty())
-    //    {
-    //        throw MMLFormatErrorException(kText, std::string("argument name should not be empty"));
-    //    }
-    //    i += argument_name.size();
-    //    i = JumpBlankCharacter(kText, i);
-    //    if (kText[i] != '=')
-    //    {
-    //        throw MMLFormatErrorException(kText, std::string("failed to find \'=\' after argument name"));
-    //    }
-    //    i++; // Jump '='
-    //    i = JumpBlankCharacter(kText, i);
-    //    std::string argument_value;
-    //    if ('\"' == kText[i])
-    //    {
-    //        argument_value = ReadQuotation(kText.c_str() + i);
-    //        assert('\"' == argument_value[0]);
-    //        assert('\"' == argument_value[argument_value.size() - 1]);
-    //        i += argument_value.size();
-    //        argument_value = std::string(argument_value.c_str() + 1, argument_value.size() - 2 * sizeof('\"'));
-    //    }
-    //    else
-    //    {
-    //        argument_value = ReadNumber(kText.c_str() + i);
-    //        i += argument_value.size();
-    //    }
-    //    i = JumpBlankCharacter(kText, i);
-    //    if (
-    //        (',' == kText[i]) ||
-    //        (';' == kText[i])
-    //        )
-    //    {
-    //        if (ret_arguments.find(argument_name) != ret_arguments.end())
-    //        {
-    //            throw MMLFormatErrorException(kText, std::string("Detected duplicate argument name: \"") + argument_name + "\"");
-    //        }
-    //        ret_arguments[argument_name] = argument_value;
-    //    }
-    //    else
-    //    {
-    //        throw MMLFormatErrorException(kText, std::string("reading argument failed"));
-    //    }
-    //}
-    //assert(i < static_cast<int>(kText.size()));
-    //if (kText[i] != ';')
-    //{
-    //    throw MMLFormatErrorException(kText, std::string("command should end with ';', but not"));
-    //}
-
-    //i++; // Jump ';'
-    //if (i < static_cast<int>(kText.size()))
-    //{
-    //    i = JumpBlankCharacter(kText, i);
-    //}
-    //if (i != kText.size())
-    //{
-    //    throw MMLFormatErrorException(kText, std::string("semi-colon appears at the middle of the MML command"));
-    //}
-    return;
+    for (std::list<MMLParser>::const_iterator ite = parser_list_.begin(); ite != parser_list_.end(); ++ite)
+    {
+        if (ite->CheckCommandName(kText))
+        {
+            int read_count = 0;
+            MMLCOMMAND_PTR result = ite->Parse(kText, read_count);
+            if (read_count != kText.size())
+            {
+                throw MMLFormatErrorException(kText, std::string("Detected extra data after command"));
+            }
+            return result;
+        }
+    }
+    throw MMLFormatErrorException(kText, std::string("Undefined MML"));
 }
 
 MMLList MMLCommandFactory::ParseScriptFile(const Tstring &kScriptFilePath)
@@ -171,52 +58,55 @@ MMLList MMLCommandFactory::ParseScriptFile(const Tstring &kScriptFilePath)
             break;
         }
         int command_length = current_command_end - p + 1; // including the ';'.
-        result.push_back(Create(std::string(p, command_length)));
+        result.push_back(ParseSingleCommand(std::string(p, command_length)));
         p += command_length;
     }
     return result;
 }
 
-
-std::string MMLCommandFactory::ReadLetterSeries(const char kText[])
+void MMLCommandFactory::InitializeParsers()
 {
-    std::string result;
-    while (isalpha(*kText))
-    {
-        result += *kText;
-        kText++;
-    }
-    return result;
-}
+    parser_list_.clear();
+    parser_list_.push_back(MMLParser(std::string("ADD-ITEM-TYPE"))
+        (std::string("TYPE"), MMLParser::eArgumentType_String)
+    );
+    parser_list_.push_back(MMLParser(std::string("ADD-ITEM-INFO"))
+        (std::string("NAME"), MMLParser::eArgumentType_ItemNamePair)
+        (std::string("ID_IN_GAME"), MMLParser::eArgumentType_Integer)
+    );
+    parser_list_.push_back(MMLParser(std::string("SET-ITEM-PRICE"))
+        (std::string("ITEM"), MMLParser::eArgumentType_ItemNamePair)
+        (std::string("PRICE"), MMLParser::eArgumentType_ItemAmountList)
+    );
+    parser_list_.push_back(MMLParser(std::string("SET-ITEM-STOCK"))
+        (std::string("ITEM"), MMLParser::eArgumentType_ItemNamePair)
+        (std::string("COUNT"), MMLParser::eArgumentType_Integer)
+    );
+    parser_list_.push_back(MMLParser(std::string("ADD-CREATING-RULE"))
+        (std::string("PRODUCT"), MMLParser::eArgumentType_ItemNamePair)
+        (std::string("RAW_MATERIALS"), MMLParser::eArgumentType_ItemAmountList)
+    );
+    parser_list_.push_back(MMLParser(std::string("ADD-DYEING-RULE"))
+        (std::string("PRODUCT"), MMLParser::eArgumentType_ItemNamePair)
+        (std::string("RAW_MATERIALS"), MMLParser::eArgumentType_ItemAmountList)
+    );
+    parser_list_.push_back(MMLParser(std::string("ADD-TASK-INFO"))
+        (std::string("TYPE"), MMLParser::eArgumentType_String)
+        (std::string("CHAPTER"), MMLParser::eArgumentType_String)
+        (std::string("STAGE"), MMLParser::eArgumentType_String)
+        (std::string("REWARDS"), MMLParser::eArgumentType_ItemAmountList)
+    );
+    parser_list_.push_back(MMLParser(std::string("SHOW-TASK-INFO"))
+        (std::string("TYPE"), MMLParser::eArgumentType_String)
+        (std::string("CHAPTER"), MMLParser::eArgumentType_String)
+        (std::string("STAGE"), MMLParser::eArgumentType_String)
+    );
+    parser_list_.push_back(MMLParser(std::string("SHOW-ITEM-INFO"))
+        (std::string("ITEM"), MMLParser::eArgumentType_ItemNamePair)
+    );
+    parser_list_.push_back(MMLParser(std::string("SHOW-ITEM-ACQUISITION-MEAN"))
+        (std::string("TARGET"), MMLParser::eArgumentType_ItemAmountList)
+    );
 
-std::string MMLCommandFactory::ReadQuotation(const char kText[])
-{
-    assert('\"' == *kText);
-
-    // eat the open '\"'
-    std::string result = "\"";
-    kText++;
-
-    // eat content
-    while (*kText != NULL)
-    {
-        result += *kText;
-        if ('\"' == *kText) // eaten character is the close '\"'
-        {
-            break;
-        }
-        kText++;
-    }
-    return result;
-}
-
-std::string MMLCommandFactory::ReadNumber(const char kText[])
-{
-    std::string result;
-    while (isdigit(*kText))
-    {
-        result += *kText;
-        kText++;
-    }
-    return result;
+    return;
 }

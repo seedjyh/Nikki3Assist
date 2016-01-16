@@ -48,11 +48,22 @@ public:
     }
     ~MMLExecutor(){}
 
+    // Execute MML command by calling DatabaseOperator methods.
+    // Need not to check database inconsistency.
     void ExecuteSingleCommand(const MMLCommand &kCommand);
 protected:
 private:
     static void RegisterMMLProcessors();
+    static MMLProcessor AddItemType;
     static MMLProcessor AddItemInfo;
+    static MMLProcessor SetItemPrice;
+    static MMLProcessor SetItemStock;
+    static MMLProcessor AddCreatingRule;
+    static MMLProcessor AddDyeingRule;
+    static MMLProcessor AddTaskInfo;
+    static MMLProcessor ShowTaskInfo;
+    static MMLProcessor ShowItemInfo;
+    static MMLProcessor ShowItemAcquisitionMean;
 };
 
 #endif

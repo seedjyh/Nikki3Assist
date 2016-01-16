@@ -32,6 +32,7 @@
 #include "IFSQLiteAdaptor/SQLiteHandle.h"
 
 // Generate SQLs and execute them.
+// Checking database inconsistency inside.
 class DatabaseOperator
 {
     SQLITEHANDLE_PTR db_handler_;

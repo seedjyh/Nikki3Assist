@@ -70,3 +70,10 @@ id，类型名、类型内部（游戏内部）的id、现有数量、获取方法。
 采用一个mml脚本，用户可以随时用该脚本创建一个没有item和task，但item-type、task-type等都已经设好的数据库。
 还可以有另一个更大的mml脚本，除了添加item-type、task-type外，将各种类型0和类型1的item、各种task-chapter和task-stage都添加好的数据库。
 原则：往任何一张表里添加记录时，不会往其他表插入、修改数据。例如，添加task-reward时，task-type，task-chapter，task-stage、reward-item-id都应该已经添加到各自的表中了，否则只有添加失败。
+
+======================================
+分层：自上而下依次是
+MMLParser: 负责将字符串的MML命令翻译成MMLCommand结构
+MMLExecutor: 负责根据MMLCommand结构调用适当的DatabaseOperator接口。
+DatabaseOperator: 负责数据库数据一致性判定，为上层提供统一接口。
+sqlite & SQL string: 负责具体SQL语句的生成、执行，以及获取查询结果。

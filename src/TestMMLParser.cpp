@@ -34,12 +34,23 @@ TEST(MMLParser, CheckCommandName_NoArgument)
     ASSERT_THROW(parser.CheckCommandName(std::string("ADD")), MMLFormatErrorException);
 }
 
+TEST(MMLParser, Parse_NoEndSemicolon)
+{
+    MMLParser parser = MMLParser(std::string("ADD"))
+        (std::string("FIRST"), MMLParser::eArgumentType_Integer)
+        (std::string("SECOND"), MMLParser::eArgumentType_Integer);
+    int read_count = 0;
+    ASSERT_THROW(parser.Parse(std::string("ADD:FIRST=5,SECOND=7"), read_count), MMLFormatErrorException);
+    ASSERT_THROW(parser.Parse(std::string("ADD:FIRST=5,SECOND=7,"), read_count), MMLFormatErrorException);
+}
+
 TEST(MMLParser, Parse_WrongArgumentType)
 {
     MMLParser parser = MMLParser(std::string("ADD"))
         (std::string("FIRST"), MMLParser::eArgumentType_Integer)
         (std::string("SECOND"), MMLParser::eArgumentType_Integer);
-    ASSERT_THROW(parser.Parse(std::string("ADD:FIRST=5,SECOND=\"7\"")), MMLFormatErrorException);
+    int read_count = 0;
+    ASSERT_THROW(parser.Parse(std::string("ADD:FIRST=5,SECOND=\"7\""), read_count), MMLFormatErrorException);
 }
 
 TEST(MMLParser, Parse_Integer)
@@ -48,7 +59,10 @@ TEST(MMLParser, Parse_Integer)
         (std::string("FIRST"), MMLParser::eArgumentType_Integer)
         (std::string("SECOND"), MMLParser::eArgumentType_Integer);
     MMLCOMMAND_PTR command;
-    ASSERT_NO_THROW(command = parser.Parse(std::string("ADD:FIRST=5,SECOND=7;")));
+    int read_count = 0;
+    const std::string kCommandText("ADD:FIRST=5,SECOND=7;");
+    ASSERT_NO_THROW(command = parser.Parse(kCommandText, read_count));
+    ASSERT_EQ(kCommandText.size(), read_count);
     ASSERT_STREQ("ADD", command->name().c_str());
     ASSERT_EQ(5, command->arguments().GetInteger(std::string("FIRST")));
     ASSERT_EQ(7, command->arguments().GetInteger(std::string("SECOND")));
@@ -64,9 +78,12 @@ TEST(MMLParser, Parse_String)
         (std::string("FIRST"), MMLParser::eArgumentType_String)
         (std::string("SECOND"), MMLParser::eArgumentType_String);
     MMLCOMMAND_PTR command;
-    ASSERT_THROW(command = parser.Parse(std::string("STRCAT:FIRST=\"abc\", SECOND=456;")), MMLFormatErrorException);
-    ASSERT_THROW(command = parser.Parse(std::string("STRCAT:FIRST=\"abc\", SECOND=def;")), MMLFormatErrorException);
-    ASSERT_NO_THROW(command = parser.Parse(std::string("STRCAT:FIRST=\"abc\", SECOND=\"def\";")));
+    int read_count = 0;
+    ASSERT_THROW(command = parser.Parse(std::string("STRCAT:FIRST=\"abc\", SECOND=456;"), read_count), MMLFormatErrorException);
+    ASSERT_THROW(command = parser.Parse(std::string("STRCAT:FIRST=\"abc\", SECOND=def;"), read_count), MMLFormatErrorException);
+    const std::string kCommandText("STRCAT:FIRST=\"abc\", SECOND=\"def\";");
+    ASSERT_NO_THROW(command = parser.Parse(kCommandText, read_count));
+    ASSERT_EQ(kCommandText.size(), read_count);
     ASSERT_STREQ("STRCAT", command->name().c_str());
     ASSERT_STREQ("abc", command->arguments().GetString(std::string("FIRST")).c_str());
     ASSERT_STREQ("def", command->arguments().GetString(std::string("SECOND")).c_str());
@@ -78,10 +95,13 @@ TEST(MMLParser, Parse_ItemNamePair)
         (std::string("FIRST"), MMLParser::eArgumentType_ItemNamePair)
         (std::string("SECOND"), MMLParser::eArgumentType_ItemNamePair);
     MMLCOMMAND_PTR command;
-    ASSERT_THROW(command = parser.Parse(std::string("ADD-ITEM:FIRST=(a|b),SECOND=(c|d);")), MMLFormatErrorException);
-    ASSERT_THROW(command = parser.Parse(std::string("ADD-ITEM:FIRST=(\"a|b\"),SECOND=(\"c|d\");")), MMLFormatErrorException);
-    ASSERT_THROW(command = parser.Parse(std::string("ADD-ITEM:FIRST=\"(a|b)\",SECOND=\"(c|d)\";")), MMLFormatErrorException);
-    ASSERT_NO_THROW(command = parser.Parse(std::string("ADD-ITEM:FIRST=(\"a\"|\"b\"),SECOND=(\"c\"|\"d\");")));
+    int read_count = 0;
+    ASSERT_THROW(command = parser.Parse(std::string("ADD-ITEM:FIRST=(a|b),SECOND=(c|d);"), read_count), MMLFormatErrorException);
+    ASSERT_THROW(command = parser.Parse(std::string("ADD-ITEM:FIRST=(\"a|b\"),SECOND=(\"c|d\");"), read_count), MMLFormatErrorException);
+    ASSERT_THROW(command = parser.Parse(std::string("ADD-ITEM:FIRST=\"(a|b)\",SECOND=\"(c|d)\";"), read_count), MMLFormatErrorException);
+    const std::string kCommandText("ADD-ITEM:FIRST=(\"a\"|\"b\"),SECOND=(\"c\"|\"d\");");
+    ASSERT_NO_THROW(command = parser.Parse(kCommandText, read_count));
+    ASSERT_EQ(kCommandText.size(), read_count);
     ASSERT_STREQ("ADD-ITEM", command->name().c_str());
     ASSERT_STREQ("a", command->arguments().GetItemNamePair(std::string("FIRST")).name().c_str());
     ASSERT_STREQ("b", command->arguments().GetItemNamePair(std::string("FIRST")).type_name().c_str());
@@ -95,15 +115,14 @@ TEST(MMLParser, Parse_ItemAmountList)
         (std::string("PRODUCT"), MMLParser::eArgumentType_ItemAmountList)
         (std::string("RAW_MATERIAL"), MMLParser::eArgumentType_ItemAmountList);
     MMLCOMMAND_PTR command;
-    ASSERT_NO_THROW(
-        command = parser.Parse(
-            std::string(
-                "ADD-RULE:"
-                "PRODUCT=[(\"product item name\"|\"product type name\")*1],"
-                "RAW_MATERIAL=[(\"raw material A item name\"|\"raw material A type name\")*2 + (\"raw material B item name\"|\"raw material B type name\")*3];"
-            )
-        )
+    int read_count = 0;
+    const std::string kCommandText(
+        "ADD-RULE:"
+        "PRODUCT=[(\"product item name\"|\"product type name\")*1],"
+        "RAW_MATERIAL=[(\"raw material A item name\"|\"raw material A type name\")*2 + (\"raw material B item name\"|\"raw material B type name\")*3];"
     );
+    ASSERT_NO_THROW(command = parser.Parse(kCommandText, read_count));
+    ASSERT_EQ(kCommandText.size(), read_count);
     ASSERT_STREQ("ADD-RULE", command->name().c_str());
     ItemAmountList product = command->arguments().GetItemAmountList(std::string("PRODUCT"));
     ASSERT_EQ(1, product.size());

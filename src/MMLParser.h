@@ -47,7 +47,9 @@ public:
     MMLParser& operator()(const std::string &kArgumentName, const eArgumentType &kArgumentType);
 
     bool CheckCommandName(const std::string &kText) const;
-    MMLCOMMAND_PTR Parse(const std::string &kText) const;
+
+    // @ret_read_count: Number of bytes this function read. Including the command and blank characters after the semi-colon if they exist.
+    MMLCOMMAND_PTR Parse(const std::string &kText, int &ret_read_count) const;
 protected:
 private:
     std::string ParseCommandName(const char kText[], int &ret_read_count) const;

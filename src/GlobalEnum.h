@@ -32,7 +32,9 @@ enum eProgramActionType
     eProgramActionType_ShowVersion,
     eProgramActionType_ShowHelp,
     eProgramActionType_ExecuteMMLCommand,
-    eProgramActionType_ExecuteMMLScriptFile
+    eProgramActionType_ExecuteMMLScriptFile,
+    eProgramActionType_TranslateJavaScriptToMMLScript,
+    eProgramActionType_CommandLineInterface
 };
 
 #endif

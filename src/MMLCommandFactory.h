@@ -24,6 +24,7 @@
 // ...
 
 // Headers of current project
+#include "MMLParser.h"
 #include "MMLCommand.h"
 
 typedef std::list<MMLCOMMAND_PTR> MMLList;
@@ -31,20 +32,22 @@ class Tstring;
 
 class MMLCommandFactory
 {
+    std::list<MMLParser> parser_list_;
 public:
+    MMLCommandFactory()
+    {
+        InitializeParsers();
+    }
+    ~MMLCommandFactory(){}
+
     // Parse the text and return MML command.
     // Throw MMLFormatErrorException if something wrong.
-    static MMLCOMMAND_PTR Create(const std::string &kCommandText);
-    static MMLList ParseScriptFile(const Tstring &kScriptFilePath);
+    MMLCOMMAND_PTR ParseSingleCommand(const std::string &kText);
+    MMLList ParseScriptFile(const Tstring &kScriptFilePath);
 
 protected:
 private:
-    MMLCommandFactory(){}
-    ~MMLCommandFactory(){}
-    static void ParseMMLCommandText(const std::string &kText, std::string &ret_type, MMLArgumentSet &ret_arguments);
-    static std::string ReadLetterSeries(const char kText[]);
-    static std::string ReadQuotation(const char kText[]);
-    static std::string ReadNumber(const char kText[]);
+    void InitializeParsers();
 };
 
 #endif

@@ -25,10 +25,11 @@
 #include "GlobalEnum.h"
 #include "DatabaseOperator.h"
 #include "DataHolderFileOperator.h"
-#include "IFDataType/IFException.h"
 #include "IFOperator/CodeTransformer.h"
 #include "MMLExecutor.h"
 #include "MMLCommandFactory.h"
+#include "exception/DatabaseInconsistencyException.h"
+#include "exception/MMLFormatErrorException.h"
 
 static const std::string s_kVersion("0.0.0.2");
 
@@ -45,14 +46,18 @@ void System::Run()
     }
     else if (eProgramActionType_ExecuteMMLCommand == ProgramArguments::Instance().action_type())
     {
-        MMLExecutor mml_executor(DatabaseOperator(ProgramArguments::Instance().sqlite_file_path()));
-        mml_executor.ExecuteSingleCommand(*MMLCommandFactory::Create(ProgramArguments::Instance().mml_to_execute()));
+        MMLCommandFactory mml_command_factory;
+        DatabaseOperator dbo(ProgramArguments::Instance().sqlite_file_path());
+        MMLExecutor mml_executor(dbo);
+        mml_executor.ExecuteSingleCommand(*mml_command_factory.ParseSingleCommand(ProgramArguments::Instance().mml_to_execute()));
         std::cout << "Execute MML: " << ProgramArguments::Instance().mml_to_execute() << std::endl;
     }
     else if (eProgramActionType_ExecuteMMLScriptFile == ProgramArguments::Instance().action_type())
     {
-        MMLList mml_list = MMLCommandFactory::ParseScriptFile(ProgramArguments::Instance().mml_file_to_execute());
-        MMLExecutor mml_executor(DatabaseOperator(ProgramArguments::Instance().sqlite_file_path()));
+        MMLCommandFactory mml_command_factory;
+        MMLList mml_list = mml_command_factory.ParseScriptFile(ProgramArguments::Instance().mml_file_to_execute());
+        DatabaseOperator dbo(ProgramArguments::Instance().sqlite_file_path());
+        MMLExecutor mml_executor(dbo);
         for (MMLList::const_iterator ite = mml_list.begin(); ite != mml_list.end(); ++ite)
         {
             mml_executor.ExecuteSingleCommand(**ite);
@@ -61,7 +66,27 @@ void System::Run()
     }
     else
     {
-        throw IFException(std::string("Unknown argument list"));
+        MMLCommandFactory mml_command_factory;
+        DatabaseOperator dbo(ProgramArguments::Instance().sqlite_file_path());
+        MMLExecutor mml_executor(dbo);
+        std::string command;
+        std::cout << "Input MML command:" << std::endl;
+        while (getline(std::cin, command))
+        {
+            try
+            {
+                mml_executor.ExecuteSingleCommand(*mml_command_factory.ParseSingleCommand(command));
+            }
+            catch (DatabaseInconsistencyException &e)
+            {
+                std::cout << e.message() << std::endl;
+            }
+            catch (MMLFormatErrorException &e)
+            {
+                std::cout << "MML format error! " << e.details() << std::endl;
+            }
+            std::cout << "Done." << std::endl;
+        }
     }
 
     return;

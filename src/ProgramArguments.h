@@ -41,7 +41,7 @@ class ProgramArguments
     Tstring sqlite_file_path_;
     std::string mml_to_execute_;
     Tstring mml_file_to_execute_;
-    int queried_item_id_;
+    Tstring javascript_file_;
 public:
     static ProgramArguments& Instance();
 
@@ -52,7 +52,6 @@ public:
     const Tstring& sqlite_file_path() const { return sqlite_file_path_; }
     const std::string& mml_to_execute() const { return mml_to_execute_; }
     const Tstring& mml_file_to_execute() const { return mml_file_to_execute_; }
-    ItemID queried_item_id() const { return queried_item_id_; }
 protected:
 private:
     ProgramArguments();

@@ -121,6 +121,7 @@
     <ClInclude Include="src\DirectoryHolder.h" />
     <ClInclude Include="src\exception\DatabaseInconsistencyException.h" />
     <ClInclude Include="src\exception\DuplicateArgumentNameException.h" />
+    <ClInclude Include="src\exception\DuplicateItemTypeException.h" />
     <ClInclude Include="src\exception\ExecuteSQLFailedException.h" />
     <ClInclude Include="src\exception\MMLFormatErrorException.h" />
     <ClInclude Include="src\exception\MMLNoSuchArgumentException.h" />
@@ -128,6 +129,7 @@
     <ClInclude Include="src\exception\NoSuchArgumentException.h" />
     <ClInclude Include="src\exception\NoSuchItemNameException.h" />
     <ClInclude Include="src\exception\NoSuchItemIDException.h" />
+    <ClInclude Include="src\exception\SystemErrorException.h" />
     <ClInclude Include="src\exception\UnknownMMLTypeException.h" />
     <ClInclude Include="src\GlobalDataType.h" />
     <ClInclude Include="src\GlobalEnum.h" />

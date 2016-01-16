@@ -30,7 +30,7 @@ class DatabaseInconsistencyException: public IFException
 {
 public:
     DatabaseInconsistencyException(const std::string &kDetails)
-    :   IFException(std::string("Detected inconsistency in database") + kDetails){}
+    :   IFException(std::string("Detected inconsistency in database: ") + kDetails){}
     virtual ~DatabaseInconsistencyException(){}
 protected:
 private:

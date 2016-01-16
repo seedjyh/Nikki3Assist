@@ -40,7 +40,7 @@ bool MMLParser::CheckCommandName(const std::string &kText) const
     return (name_ == name_in_text);
 }
 
-MMLCOMMAND_PTR MMLParser::Parse(const std::string &kText) const
+MMLCOMMAND_PTR MMLParser::Parse(const std::string &kText, int &ret_read_count) const
 {
     int read_count = 0;
     std::string name;
@@ -51,6 +51,7 @@ MMLCOMMAND_PTR MMLParser::Parse(const std::string &kText) const
     total_read_count = read_count;
 
     std::set<std::string> found_argument_names;
+    bool found_end_semicolon = false;
     while (total_read_count < static_cast<int>(kText.size()))
     {
         // read argument name
@@ -104,9 +105,15 @@ MMLCOMMAND_PTR MMLParser::Parse(const std::string &kText) const
         }
 
         total_read_count += JumpBlankCharacter(kText.c_str() + total_read_count);
-        if (CheckCharacter(kText[total_read_count], ",;"))
+        if (',' == kText[total_read_count])
         {
             total_read_count++;
+        }
+        else if (';' == kText[total_read_count])
+        {
+            found_end_semicolon = true;
+            total_read_count++;
+            break;
         }
         else
         {
@@ -115,6 +122,11 @@ MMLCOMMAND_PTR MMLParser::Parse(const std::string &kText) const
         total_read_count += JumpBlankCharacter(kText.c_str() + total_read_count);
     }
 
+    if (!found_end_semicolon)
+    {
+        throw MMLFormatErrorException(kText, std::string("No required \';\' as the end of MML command"));
+    }
+    ret_read_count = total_read_count;
     return MMLCOMMAND_PTR(new MMLCommand(name, arguments));
 }
 

@@ -30,6 +30,7 @@
 #include "DatabaseOperator.h"
 #include "exception/NoSuchItemNameException.h"
 #include "IFOperator/NumberOperator.h"
+#include "exception/DuplicateItemTypeException.h"
 
 MMLProcessorMap MMLExecutor::s_processors_;
 
@@ -46,21 +47,74 @@ void MMLExecutor::ExecuteSingleCommand(const MMLCommand &kCommand)
 
 void MMLExecutor::RegisterMMLProcessors()
 {
+    s_processors_[std::string("ADD-ITEM-TYPE")] = AddItemType;
     s_processors_[std::string("ADD-ITEM-INFO")] = AddItemInfo;
+    s_processors_[std::string("SET-ITEM-PRICE")] = SetItemPrice;
+    s_processors_[std::string("SET-ITEM-STOCK")] = SetItemStock;
+    s_processors_[std::string("ADD-CREATING-RULE")] = AddCreatingRule;
+    s_processors_[std::string("ADD-DYEING-RULE")] = AddDyeingRule;
+    s_processors_[std::string("ADD-TASK-INFO")] = AddTaskInfo;
+    s_processors_[std::string("SHOW-TASK-INFO")] = ShowTaskInfo;
+    s_processors_[std::string("SHOW-ITEM-INFO")] = ShowItemInfo;
+    s_processors_[std::string("SHOW-ITEM-ACQUISITION-MEAN")] = ShowItemAcquisitionMean;
 }
+
+void MMLExecutor::AddItemType(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    db.AddItemType(kArguments.GetString(std::string("TYPE")));
+    return;
+}
+
 
 void MMLExecutor::AddItemInfo(DatabaseOperator &db, const MMLArgumentSet &kArguments)
 {
-    const ItemNamePair kNamePair = kArguments.GetItemNamePair(std::string("NAME"));
-    const int kIDInGame = kArguments.GetInteger(std::string("ID_IN_GAME"));
-    try
-    {
-        ItemID item_id = db.QueryItemID(kNamePair.name(), kNamePair.type_name());
-        db.UpdateItemInfo(item_id, ITEMINFO_PTR(new ItemInfo(kNamePair, kIDInGame)));
-    }
-    catch (NoSuchItemNameException &)
-    {
-        db.AddItemInfo(ITEMINFO_PTR(new ItemInfo(kNamePair, kIDInGame)));
-    }
+    db.AddItemInfo(
+        ITEMINFO_PTR(
+            new ItemInfo(
+                kArguments.GetItemNamePair(std::string("NAME")),
+                kArguments.GetInteger(std::string("ID_IN_GAME"))
+            )
+        )
+    );
+    return;
+}
+
+void MMLExecutor::SetItemPrice(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    return;
+}
+
+void MMLExecutor::SetItemStock(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    return;
+}
+
+void MMLExecutor::AddCreatingRule(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    return;
+}
+
+void MMLExecutor::AddDyeingRule(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    return;
+}
+
+void MMLExecutor::AddTaskInfo(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    return;
+}
+
+void MMLExecutor::ShowTaskInfo(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    return;
+}
+
+void MMLExecutor::ShowItemInfo(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
+    return;
+}
+
+void MMLExecutor::ShowItemAcquisitionMean(DatabaseOperator &db, const MMLArgumentSet &kArguments)
+{
     return;
 }

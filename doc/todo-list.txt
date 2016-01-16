@@ -1,6 +1,22 @@
-MMLCommandFactory
-	从静态类变成实体类。
-	添加函数Init()，用于初始化argument格式列表。
-
 MMLExecutor
+    从单态类换成常规类。
 	针对每一种解析出来的MMLCommand，进行处理。
+
+    step 1：从http://ivangift.github.io/nikkistats/wardrobe.js解析出所有的服装信息：itemtype, iteminfo, taskinfo
+    step 2：从http://gametools.joyme.com/qjnn/爬取所有的合成公式，包括设计图、进化、染色、商店、兑换：creatingrule, dyeingrule, price
+        对于step2的爬取，注意判重，避免重复抓取。
+
+程序参数：translate
+    将从http://ivangift.github.io/nikkistats/wardrobe.js下载的js文件转化成MML命令文件组。格式：在文件末尾加上”.mml“。
+    这里MML命令包括：
+        wardrobe.itemtype.mml，
+        wardrobe.iteminfo.mml,
+        wardrobe.taskinfo.mml（包括reward）
+        wardrobe.creatingrule.mml（进化消耗的）
+        wardrobe.dyeingrule.mml
+    以后还可以加入：如果文件名是http的，则还可以先从网上下载再加载。
+
+因此，需要本地保存的脚本仅只包括：自己的服装（包括货币）的数量。
+    一般地，在完成任务、完成进化、完成商店购买或兑换时，修改“自己的服装数量”的.mml脚本即可。
+    重建数据库的步骤：加载其他程序生成的各种数据公式，加载《自己的服装数量.mml》。
+    

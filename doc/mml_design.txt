@@ -7,14 +7,14 @@ Formular    :=  \[ItemAmount[+ItemAmount]*\]
 
 ADD-ITEM-TYPE: TYPE="String"
 ADD-ITEM-INFO: NAME="ItemNamePair", ID_IN_GAME="Integer"
-SET-ITEM-PRICE: ITEM="ItemNamePair", PRICE="ItemAmount"
+SET-ITEM-PRICE: ITEM="ItemNamePair", PRICE="ItemAmountList"
 SET-ITEM-STOCK: ITEM="ItemNamePair", COUNT="Integer"
 ADD-CREATING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
 ADD-DYEING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
-ADD-TASK: TYPE="String", CHAPTER="String", STAGE="String"
-SET-TASK-REWARD: TYPE="String", CHAPTER="String", STAGE="String", REWARDS="ItemNamePair"
+ADD-TASK-INFO: TYPE="String", CHAPTER="String", STAGE="String", REWARDS="ItemNamePair"
+SHOW-TASK-INFO: TYPE="String", CHAPTER="String", STAGE="String"
 SHOW-ITEM-INFO: ITEM="ItemNamePair"
-SHOW-ITEM-ACQUISITION-MEAN: TARGET="Formular"
+SHOW-ITEM-ACQUISITION-MEAN: TARGET="ItemAmountList"
 
 ======================
 

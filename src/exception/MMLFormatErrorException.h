@@ -28,10 +28,17 @@
 
 class MMLFormatErrorException : public IFException
 {
+    std::string text_;
+    std::string details_;
 public:
     MMLFormatErrorException(const std::string &kText, const std::string &kDetails)
-    :   IFException(std::string("MML format error, command=\"") + kText + "\", details=" + kDetails){}
+    :   IFException(std::string("MML format error, command=\"") + kText + "\", details=" + kDetails),
+        text_(kText),
+        details_(kDetails){}
     virtual ~MMLFormatErrorException(){}
+
+    const std::string& text() const { return text_; }
+    const std::string& details() const { return details_; }
 protected:
 private:
 };

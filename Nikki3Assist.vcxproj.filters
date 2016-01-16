@@ -184,6 +184,12 @@
     <ClInclude Include="src\exception\NoSuchArgumentException.h">
       <Filter>src\exception</Filter>
     </ClInclude>
+    <ClInclude Include="src\exception\DuplicateItemTypeException.h">
+      <Filter>src\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exception\SystemErrorException.h">
+      <Filter>src\exception</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">

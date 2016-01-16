@@ -21,7 +21,6 @@
 // ...
 
 // Headers of current project
-#include "IFDataType/IFException.h"
 #include "IFSQLiteAdaptor/SQLiteHandleFactory.h"
 #include "IFOperator/CodeTransformer.h"
 #include "IFOperator/NumberOperator.h"
@@ -29,13 +28,15 @@
 #include "exception/DatabaseInconsistencyException.h"
 #include "exception/NoSuchItemNameException.h"
 #include "exception/NoSuchItemIDException.h"
+#include "exception/SystemErrorException.h"
 
 DatabaseOperator::DatabaseOperator(const Tstring &kFilePath)
 :   db_handler_(SQLiteHandleFactory::Create())
 {
-    if (!db_handler_->Open(CodeTransformer::TransTstringToString(kFilePath)))
+    const std::string kFilePath_str = CodeTransformer::TransTstringToString(kFilePath);
+    if (!db_handler_->Open(kFilePath_str))
     {
-        throw IFException(std::string("Open database file failed"));
+        throw SystemErrorException(std::string("Database"), std::string("Open database file \"") + kFilePath_str + "\" failed");
     }
 
     if (

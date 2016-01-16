@@ -88,6 +88,15 @@ void ProgramArguments::Initialize(int argc, const char * const *argv)
         return;
     }
 
+    if (option_map.count("translate"))
+    {
+        action_type_ = eProgramActionType_TranslateJavaScriptToMMLScript;
+        javascript_file_ = CodeTransformer::TransStringToTString(option_map["translate"].as<std::string>());
+        return;
+    }
+
+    action_type_ = eProgramActionType_CommandLineInterface;
+
     return;
 }
 
@@ -102,11 +111,12 @@ ProgramArguments::ProgramArguments()
 :   option_desc_("command line options")
 {
     option_desc_.add_options()
+        ("version,v", "print version of Nikki3Assist")
         ("help,h", "print this message")
-        ("version,v", "print version of VXI")
         ("database,d", boost::program_options::value<std::string>(), "sqlite database file path")
         ("execute,e", boost::program_options::value<std::string>(), "execute an MML")
         ("source,s", boost::program_options::value<std::string>(), "execute a MML script file")
+        ("translate,t", boost::program_options::value<std::string>(), "translate wardrobe.js to MML script")
         ;
 }
 
