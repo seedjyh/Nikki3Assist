@@ -19,6 +19,7 @@
 
 // C++ system headers
 #include <map>
+#include <set>
 
 // Headers from other projects
 // ...
@@ -29,10 +30,11 @@
 typedef int ItemTypeID;
 
 typedef int ItemID;
-typedef std::map<ItemID, int> Materials;
+typedef std::map<ItemID, int> ItemIDAmountMap;
 
 typedef ItemID ItemIDInGame;
 
 typedef int TaskID;
+typedef std::set<TaskID> TaskIDSet;
 
 #endif

@@ -1,4 +1,4 @@
-[TYPE DEFINE]
+[TYPE       EFINE]
 Integer     :=  [1-9][0-9]*
 String      :=  "XXXX"
 ItemNamePair:=  (String|String)
@@ -9,13 +9,20 @@ ADD-ITEM-TYPE: TYPE="String"
 ADD-ITEM-INFO: NAME="ItemNamePair", ID_IN_GAME="Integer"
 SET-ITEM-PRICE: ITEM="ItemNamePair", PRICE="ItemAmountList"
 SET-ITEM-STOCK: ITEM="ItemNamePair", COUNT="Integer"
-ADD-CREATING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
-ADD-DYEING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
+SET-CREATING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
+SET-DYEING-RULE: PRODUCT="ItemNamePair", RAW_MATERIALS="Formular"
 ADD-TASK-INFO: TYPE="String", CHAPTER="String", STAGE="String", REWARDS="ItemNamePair"
 SHOW-TASK-INFO: TYPE="String", CHAPTER="String", STAGE="String"
 SHOW-ITEM-INFO: ITEM="ItemNamePair"
 SHOW-ITEM-ACQUISITION-MEAN: TARGET="ItemAmountList"
 
+THE DIFFERNECE BETWEEN "ADD" AND "SET" IN MML.
+"ADD":
+    Creating a new "auto increase primary key".
+    If some record with same content (with smaller primary key, of course) existed, throw DatabaseInconsistencyException.
+"SET":
+    Will NOT creating any "auto increase primary key".
+    If some record with same key existed, delete it and insert new records.
 ======================
 
 MMLParser("ADD-CREATING-RULE")("PRODUCT", "ItemNamePairParser")("RAW-MATERIALS", "FormularParser") // The second string is argument-type, which should be save in a const std::string.  

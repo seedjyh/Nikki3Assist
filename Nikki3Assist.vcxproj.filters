@@ -190,6 +190,27 @@
     <ClInclude Include="src\exception\SystemErrorException.h">
       <Filter>src\exception</Filter>
     </ClInclude>
+    <ClInclude Include="src\exception\DuplicateTaskException.h">
+      <Filter>src\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exception\NoSuchTaskException.h">
+      <Filter>src\exception</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TaskToDo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MoneyToPay.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TaskName.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ItemIDAmount.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\exception\NoWayToAcquireItemException.h">
+      <Filter>src\exception</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -268,6 +289,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\MMLArgumentSet.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ItemAcquisition.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

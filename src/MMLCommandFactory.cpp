@@ -82,11 +82,11 @@ void MMLCommandFactory::InitializeParsers()
         (std::string("ITEM"), MMLParser::eArgumentType_ItemNamePair)
         (std::string("COUNT"), MMLParser::eArgumentType_Integer)
     );
-    parser_list_.push_back(MMLParser(std::string("ADD-CREATING-RULE"))
+    parser_list_.push_back(MMLParser(std::string("SET-CREATING-RULE"))
         (std::string("PRODUCT"), MMLParser::eArgumentType_ItemNamePair)
         (std::string("RAW_MATERIALS"), MMLParser::eArgumentType_ItemAmountList)
     );
-    parser_list_.push_back(MMLParser(std::string("ADD-DYEING-RULE"))
+    parser_list_.push_back(MMLParser(std::string("SET-DYEING-RULE"))
         (std::string("PRODUCT"), MMLParser::eArgumentType_ItemNamePair)
         (std::string("RAW_MATERIALS"), MMLParser::eArgumentType_ItemAmountList)
     );
@@ -95,14 +95,6 @@ void MMLCommandFactory::InitializeParsers()
         (std::string("CHAPTER"), MMLParser::eArgumentType_String)
         (std::string("STAGE"), MMLParser::eArgumentType_String)
         (std::string("REWARDS"), MMLParser::eArgumentType_ItemAmountList)
-    );
-    parser_list_.push_back(MMLParser(std::string("SHOW-TASK-INFO"))
-        (std::string("TYPE"), MMLParser::eArgumentType_String)
-        (std::string("CHAPTER"), MMLParser::eArgumentType_String)
-        (std::string("STAGE"), MMLParser::eArgumentType_String)
-    );
-    parser_list_.push_back(MMLParser(std::string("SHOW-ITEM-INFO"))
-        (std::string("ITEM"), MMLParser::eArgumentType_ItemNamePair)
     );
     parser_list_.push_back(MMLParser(std::string("SHOW-ITEM-ACQUISITION-MEAN"))
         (std::string("TARGET"), MMLParser::eArgumentType_ItemAmountList)

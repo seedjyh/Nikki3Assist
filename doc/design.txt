@@ -1,43 +1,43 @@
 数据库设计：8张表
 <ItemTypes>
-primary key in typeid
-string typename
+primary key in id
+string name
 注1：金币、钻石、星光币、联盟币、水晶鞋……等货币属于类型0，染料、制作原料（布片）等消耗品属于类型1，设计图属于类型2。“衣柜”里有分类的，从3开始。注意“饰品”不进一步分类。
 
 <Items>
 primary key int id
 string name
-foreign key int typeid
+foreign key int type_id
 int id_in_game
 
 <Inventory>
-foreign key ID
+foreign key item_id
 int count
 
 <CreatingRules> // “合成”、“进化”、“元素重构”都在这里，因为都属于“会保留一个原材料”的类型。注意这里“金币”（类型0）是不会保留一个的。
-foreign key int product_uid
-foreign key int raw_material_uid
+foreign key int product_id
+foreign key int raw_material_id
 int count
 
 <DyeingRules> // 这张表里公式的执行不会保留1个原材料。
-foreign key int product_uid
-foreign key int raw_material_uid
+foreign key int product_id
+foreign key int raw_material_id
 int count
 
-<Store>
-foreign key int item_uid
-foreign key int money_uid
+<ItemsPrice>
+foreign key int item_id
+foreign key int money_id
 int price
 
 <Tasks>
 primary key id
-string type-name // 注：3种，包括公主级、少女级、联盟任务。
+string type // 注：3种，包括公主级、少女级、联盟任务。
 string chapter // 1~9
 string stage // 1~N, 支1~支M
 
 <TaskRewards>
-foreign key int task_uid
-foreign key int reward_item_uid
+foreign key int task_id
+foreign key int reward_item_id
 
 ======================================
 《查询物品信息》返回内容

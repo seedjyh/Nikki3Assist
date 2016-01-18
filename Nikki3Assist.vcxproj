@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;_GTEST_;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4996;4005</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,6 +122,7 @@
     <ClInclude Include="src\exception\DatabaseInconsistencyException.h" />
     <ClInclude Include="src\exception\DuplicateArgumentNameException.h" />
     <ClInclude Include="src\exception\DuplicateItemTypeException.h" />
+    <ClInclude Include="src\exception\DuplicateTaskException.h" />
     <ClInclude Include="src\exception\ExecuteSQLFailedException.h" />
     <ClInclude Include="src\exception\MMLFormatErrorException.h" />
     <ClInclude Include="src\exception\MMLNoSuchArgumentException.h" />
@@ -129,6 +130,8 @@
     <ClInclude Include="src\exception\NoSuchArgumentException.h" />
     <ClInclude Include="src\exception\NoSuchItemNameException.h" />
     <ClInclude Include="src\exception\NoSuchItemIDException.h" />
+    <ClInclude Include="src\exception\NoSuchTaskException.h" />
+    <ClInclude Include="src\exception\NoWayToAcquireItemException.h" />
     <ClInclude Include="src\exception\SystemErrorException.h" />
     <ClInclude Include="src\exception\UnknownMMLTypeException.h" />
     <ClInclude Include="src\GlobalDataType.h" />
@@ -159,6 +162,7 @@
     <ClInclude Include="src\IFSQLiteAdaptor\sqlitesrc\sqlite3ext.h" />
     <ClInclude Include="src\IFSQLiteAdaptor\SQLResultDataStructure.h" />
     <ClInclude Include="src\ItemAcquisition.h" />
+    <ClInclude Include="src\ItemIDAmount.h" />
     <ClInclude Include="src\ItemInfo.h" />
     <ClInclude Include="src\ItemNamePair.h" />
     <ClInclude Include="src\ItemAmount.h" />
@@ -167,9 +171,12 @@
     <ClInclude Include="src\MMLCommandFactory.h" />
     <ClInclude Include="src\MMLExecutor.h" />
     <ClInclude Include="src\MMLParser.h" />
+    <ClInclude Include="src\MoneyToPay.h" />
     <ClInclude Include="src\PauseWhenDestruct.h" />
     <ClInclude Include="src\ProgramArguments.h" />
     <ClInclude Include="src\System.h" />
+    <ClInclude Include="src\TaskName.h" />
+    <ClInclude Include="src\TaskToDo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DatabaseOperator.cpp" />
@@ -186,6 +193,7 @@
     <ClCompile Include="src\IFSQLiteAdaptor\SQLiteHandleLockCtrl.cpp" />
     <ClCompile Include="src\IFSQLiteAdaptor\SQLiteLogger.cpp" />
     <ClCompile Include="src\IFSQLiteAdaptor\sqlitesrc\sqlite3.c" />
+    <ClCompile Include="src\ItemAcquisition.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\MainGoogleTest.cpp" />
     <ClCompile Include="src\MMLArgumentSet.cpp" />

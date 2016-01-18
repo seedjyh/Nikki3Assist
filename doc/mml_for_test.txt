@@ -1,0 +1,21 @@
+ADD-ITEM-TYPE:TYPE="货币";
+ADD-ITEM-TYPE:TYPE="上衣";
+ADD-ITEM-TYPE:TYPE="下装";
+ADD-ITEM-TYPE:TYPE="鞋子";
+
+ADD-ITEM-INFO: NAME=("金币"|"货币"), ID_IN_GAME=10001;
+ADD-ITEM-INFO: NAME=("芬芳·粉"|"上衣"), ID_IN_GAME=179;
+ADD-ITEM-INFO: NAME=("毛毡短裤"|"下装"), ID_IN_GAME=113;
+ADD-ITEM-INFO: NAME=("花边短裤·灰"|"下装"), ID_IN_GAME=78;
+ADD-ITEM-INFO: NAME=("卷边少女"|"下装"), ID_IN_GAME=224;
+ADD-ITEM-INFO: NAME=("过膝长靴"|"鞋子"), ID_IN_GAME=294;
+SET-CREATING-RULE: PRODUCT=("毛毡短裤"|"下装"),RAW_MATERIALS=[("花边短裤·灰"|"下装")*5+("芬芳·粉"|"上衣")*2];
+SET-ITEM-PRICE: ITEM=("花边短裤·灰"|"下装"), PRICE=[("金币"|"货币")*3217];
+
+ADD-TASK-INFO: TYPE="少女级", CHAPTER="2", STAGE="1", REWARDS=[("芬芳·粉"|"上衣")*1+("卷边少女"|"下装")*1];
+ADD-TASK-INFO: TYPE="少女级", CHAPTER="2", STAGE="2", REWARDS=[("花边短裤·灰"|"下装")*1+("过膝长靴"|"鞋子")*1];
+
+SET-ITEM-STOCK: ITEM=("芬芳·粉"|"上衣"), COUNT=1;
+SET-ITEM-STOCK: ITEM=("花边短裤·灰"|"下装"), COUNT=2;
+
+SHOW-ITEM-ACQUISITION-MEAN: TARGET=[("毛毡短裤"|"下装")*1];

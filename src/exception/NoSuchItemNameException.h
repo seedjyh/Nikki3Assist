@@ -26,11 +26,13 @@
 // Headers of current project
 // ...
 
+class ItemNamePair;
+
 class NoSuchItemNameException: public IFException
 {
 public:
-    NoSuchItemNameException(const std::string &kItemName, const std::string &kTypeName)
-    :   IFException(std::string("No such item with name=\"") + kItemName + "\" and type-name=\"" + kTypeName + "\""){}
+    NoSuchItemNameException(const ItemNamePair &kItemNamePair)
+    :   IFException(std::string("No such item with name=\"") + kItemNamePair.name() + "\" and type-name=\"" + kItemNamePair.type_name() + "\""){}
     virtual ~NoSuchItemNameException(){}
 protected:
 private:

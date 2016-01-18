@@ -24,15 +24,24 @@
 // ...
 
 // Headers of current project
-// ...
+#include "TaskToDo.h"
+#include "MoneyToPay.h"
+#include "ItemAmount.h"
 
 class ItemAcquisition
 {
+    TaskToDoList task_to_do_;
+    MoneyToPayList money_to_pay_;
+    ItemAmountList items_unknown_how_to_get_;
 public:
     ItemAcquisition(){}
     ~ItemAcquisition(){}
 
-    void Print(){}
+    void AppendTaskToDo(const TaskToDo &kTaskToDo);
+    void AppendMoneyToPay(const MoneyToPay &kMoneyToPay);
+    void AppendItemsUnknownHowToAcquire(const ItemAmount &kItemAmount);
+
+    friend std::ostream& operator<<(std::ostream &output, const ItemAcquisition &kThis);
 protected:
 private:
 };

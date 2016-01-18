@@ -28,16 +28,22 @@
 
 class ItemAmount
 {
-    const ItemNamePair kNamePair_;
+    ItemNamePair name_pair_;
     int count_;
 public:
     ItemAmount(const ItemNamePair &kNamePair, int count)
-    :   kNamePair_(kNamePair),
+    :   name_pair_(kNamePair),
         count_(count){}
     ~ItemAmount(){}
 
-    const ItemNamePair& name_pair() const { return kNamePair_; }
+    const ItemNamePair& name_pair() const { return name_pair_; }
     int count() const { return count_; }
+
+    friend std::ostream& operator<<(std::ostream &output, const ItemAmount &kThis)
+    {
+        output << kThis.name_pair_ << " * " << kThis.count_;
+        return output;
+    }
 protected:
 private:
 };

@@ -76,6 +76,7 @@ void System::Run()
             try
             {
                 mml_executor.ExecuteSingleCommand(*mml_command_factory.ParseSingleCommand(command));
+                std::cout << "Done." << std::endl;
             }
             catch (DatabaseInconsistencyException &e)
             {
@@ -85,7 +86,6 @@ void System::Run()
             {
                 std::cout << "MML format error! " << e.details() << std::endl;
             }
-            std::cout << "Done." << std::endl;
         }
     }
 

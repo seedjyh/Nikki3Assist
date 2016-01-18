@@ -39,6 +39,17 @@ public:
 
     const std::string& name() const { return name_; }
     const std::string& type_name() const { return type_name_; }
+
+    std::string str() const
+    {
+        return std::string("( \"") + name_ + "\" | \"" + type_name_ + "\" )";
+    }
+
+    friend std::ostream& operator<<(std::ostream &output, const ItemNamePair &kThis)
+    {
+        output <<  kThis.str();
+        return output;
+    }
 protected:
 private:
 };

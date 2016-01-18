@@ -58,11 +58,9 @@ private:
     static MMLProcessor AddItemInfo;
     static MMLProcessor SetItemPrice;
     static MMLProcessor SetItemStock;
-    static MMLProcessor AddCreatingRule;
-    static MMLProcessor AddDyeingRule;
+    static MMLProcessor SetCreatingRule;
+    static MMLProcessor SetDyeingRule;
     static MMLProcessor AddTaskInfo;
-    static MMLProcessor ShowTaskInfo;
-    static MMLProcessor ShowItemInfo;
     static MMLProcessor ShowItemAcquisitionMean;
 };
 
