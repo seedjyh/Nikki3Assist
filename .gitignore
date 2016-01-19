@@ -34,6 +34,10 @@
 *.xml
 *.sdf
 *.opensdf
+*.ilk
+*.ilk
+*.pdb
+*.js
 /DebugGoogleTest/
 /Debug/
 /bin/
