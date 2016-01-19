@@ -760,7 +760,7 @@ ItemIDAmountMap DatabaseOperator::QueryMaterialsForCreating(const ItemIDAmount &
         ItemID material_id = NumberOperator::AtoI(sql_result->GetResult(i, 0));
         int material_count = NumberOperator::AtoI(sql_result->GetResult(i, 1));
         assert(materials.end() == materials.find(material_id));
-        materials[material_id] = (material_count - 1) * (kTarget.count() - 1) + material_count;
+        materials[material_id] = (material_count - 1) * (kTarget.count() - 1) + material_count; // creating (or revolution) would left 1 material after processing.
     }
     return materials;
 }
@@ -777,7 +777,7 @@ ItemIDAmountMap DatabaseOperator::QueryMaterialsForDyeing(const ItemIDAmount &kT
         ItemID material_id = NumberOperator::AtoI(sql_result->GetResult(i, 0));
         int material_count = NumberOperator::AtoI(sql_result->GetResult(i, 1));
         assert(materials.end() == materials.find(material_id));
-        materials[material_id] = (material_count - 1) * (kTarget.count() - 1) + material_count;
+        materials[material_id] = material_count * kTarget.count(); // dyeing would consume all materials
     }
     return materials;
 }
