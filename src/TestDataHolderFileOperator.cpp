@@ -25,6 +25,16 @@
 // Headers of current project
 #include "DirectoryHolder.h"
 
+TEST(DataHolderFileOperator, WriteToFile_CreateFromFile_EmptyFile)
+{
+    Tstring test_dir_path(_T("test\\"));
+    Tstring file_path = test_dir_path + _T("hello.dat");
+    DirectoryHolder dir_holder(test_dir_path);
+    DataHolderFileOperator::WriteToFile(DATAHOLDER_PTR(new DataHolder()), file_path);
+    DATAHOLDER_PTR new_data = DataHolderFileOperator::CreateFromFile(file_path);
+    ASSERT_EQ(0, new_data->size());
+}
+
 TEST(DataHolderFileOperator, WriteToFile_CreateFromFile)
 {
     Tstring test_dir_path(_T("test\\"));

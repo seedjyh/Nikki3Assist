@@ -46,20 +46,23 @@ MMLList MMLCommandFactory::ParseScriptFile(const Tstring &kScriptFilePath)
 {
     DATAHOLDER_PTR script_data = DataHolderFileOperator::CreateFromFile(kScriptFilePath);
     MMLList result;
-    for (const char *p = script_data->content();;)
+    if (script_data->size() > 0)
     {
-        const char *current_command_end = strchr(p, ';');
-        if (NULL == current_command_end)
+        for (const char *p = script_data->content();;)
         {
-            break;
+            const char *current_command_end = strchr(p, ';');
+            if (NULL == current_command_end)
+            {
+                break;
+            }
+            if (p >= script_data->content() + script_data->size())
+            {
+                break;
+            }
+            int command_length = current_command_end - p + 1; // including the ';'.
+            result.push_back(ParseSingleCommand(std::string(p, command_length)));
+            p += command_length;
         }
-        if (p >= script_data->content() + script_data->size())
-        {
-            break;
-        }
-        int command_length = current_command_end - p + 1; // including the ';'.
-        result.push_back(ParseSingleCommand(std::string(p, command_length)));
-        p += command_length;
     }
     return result;
 }
